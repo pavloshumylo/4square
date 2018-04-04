@@ -1,12 +1,10 @@
 package com.template.demo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
-import java.util.Map;
 
 @JsonDeserialize(using = InformationDeserializer.class)
 public class Information {
@@ -48,6 +46,7 @@ public class Information {
         this.phone = phone;
     }
 
+    // 6. Mapping with JsonNode
     public Information jsonNodeCase(String json) throws IOException {
         JsonNode informationNode = new ObjectMapper().readTree(json);
         Information information = new Information();
@@ -57,12 +56,4 @@ public class Information {
         information.setPhone(informationNode.get("response").get("venues").get(0).get("contact").get("phone").textValue());
         return information;
     }
-
-    // 5 Mapping with Annotations
-    @SuppressWarnings("unchecked")
-    @JsonProperty("meta")
-    public void unpackMeta(Map<String, Object> meta) {
-        System.out.println((String)meta.get("requestId"));
-    }
-
 }

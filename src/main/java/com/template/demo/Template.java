@@ -25,18 +25,24 @@ public class Template {
 
             Information information = new Information();
 
-
             // 6. Mapping with JsonNode
             Information informationResult = information.jsonNodeCase(response.getBody().toString());
+
             System.out.println(informationResult.getId());
             System.out.println(informationResult.getName());
             System.out.println(informationResult.getAddress());
             System.out.println(informationResult.getPhone());
 
-            //7.2 Automatic Registration of Deserializer
+            // 7.2 Automatic Registration of Deserializer
+            System.out.println();
+
             ObjectMapper mapper = new ObjectMapper();
-            Information information1 = mapper.readValue(response.getBody().toString(), Information.class);
-            System.out.println(information.getPhone());
+            Information informationResultSecond = mapper.readValue(response.getBody().toString(), Information.class);
+
+            System.out.println(informationResultSecond.getId());
+            System.out.println(informationResultSecond.getName());
+            System.out.println(informationResultSecond.getAddress());
+            System.out.println(informationResultSecond.getPhone());
         }
         catch (HttpClientErrorException ex) {
             System.out.println(ex);

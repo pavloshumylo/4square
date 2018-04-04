@@ -19,11 +19,15 @@ public class InformationDeserializer extends StdDeserializer<Information> {
         super(vc);
     }
 
+    //related to 7.2
     @Override
     public Information deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode informationNode = jp.getCodec().readTree(jp);
         Information information = new Information();
-        information.setPhone(informationNode.get("meta").get("requestId").textValue()); //test version
+        information.setId(informationNode.get("response").get("venues").get(0).get("id").textValue());
+        information.setName(informationNode.get("response").get("venues").get(0).get("name").textValue());
+        information.setAddress(informationNode.get("response").get("venues").get(0).get("location").get("address").textValue());
+        information.setPhone(informationNode.get("response").get("venues").get(0).get("contact").get("phone").textValue());
         return information;
     }
 }
