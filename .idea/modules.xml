@@ -2,11 +2,21 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../demo/.idea/modules/4SquareService.iml" filepath="$PROJECT_DIR$/../demo/.idea/modules/4SquareService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cron.iml" filepath="$PROJECT_DIR$/.idea/modules/cron.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service.iml" filepath="$PROJECT_DIR$/.idea/modules/service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/4SquareService.iml" filepath="$PROJECT_DIR$/.idea/modules/4SquareService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/4SquareService_main.iml" filepath="$PROJECT_DIR$/.idea/modules/4SquareService_main.iml" group="4SquareService" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/4SquareService_test.iml" filepath="$PROJECT_DIR$/.idea/modules/4SquareService_test.iml" group="4SquareService" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_main.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_test.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_main.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_test.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cron/cron.iml" filepath="$PROJECT_DIR$/.idea/modules/cron/cron.iml" group="cron" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cron/cron_main.iml" filepath="$PROJECT_DIR$/.idea/modules/cron/cron_main.iml" group="cron" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cron/cron_test.iml" filepath="$PROJECT_DIR$/.idea/modules/cron/cron_test.iml" group="cron" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service.iml" group="service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service_main.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service_main.iml" group="service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service_test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service_test.iml" group="service" />
     </modules>
   </component>
 </project>
