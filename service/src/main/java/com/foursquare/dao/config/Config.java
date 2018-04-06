@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
 
     @Bean
-     public SearchDao createBean(){
+     public SearchDao searchDao(){
         return new MockSearchDaoImpl();
     }
 }
