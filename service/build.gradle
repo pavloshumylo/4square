@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.9.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: ver
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(':common')
 }

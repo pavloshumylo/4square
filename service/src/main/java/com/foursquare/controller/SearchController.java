@@ -1,7 +1,7 @@
-package com.controller;
+package com.foursquare.controller;
 
-import com.dto.SearchResponseDto;
-import com.service.SearchService;
+import com.foursquare.dto.SearchResponseDto;
+import com.foursquare.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

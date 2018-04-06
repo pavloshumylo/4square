@@ -1,11 +1,8 @@
-package com.dto;
-
-import org.springframework.stereotype.Repository;
+package com.foursquare.dto;
 
 import java.util.LinkedList;
 import java.util.List;
 
-@Repository
 public class SearchResponseDto {
 
     private List<VenueDto> venues;

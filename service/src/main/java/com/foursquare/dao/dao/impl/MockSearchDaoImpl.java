@@ -1,9 +1,9 @@
-package com.dao;
+package com.foursquare.dao.dao.impl;
 
-import org.springframework.stereotype.Repository;
+import com.foursquare.dao.SearchDao;
+import org.springframework.context.annotation.Bean;
 
-@Repository
-public class SearchDao {
+public class MockSearchDaoImpl implements SearchDao {
 
     public String search(String city, String place) {
         String json = "{\n" +
@@ -34,4 +34,5 @@ public class SearchDao {
 
         return json;
     }
+
 }
