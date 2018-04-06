@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.*;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -20,20 +21,25 @@ public class SearchServiceImpl implements SearchService {
     public SearchResponseDto search(String city, String place) {
         SearchResponseDto searchResponse = new SearchResponseDto();
         try {
-            searchResponse.getVenues().add(mapFromJson(search.search(city, place)));
+            mapFromJson(search.search(city, place), searchResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return searchResponse;
     }
 
-    private VenueDto mapFromJson(String json) throws IOException {
+    private void mapFromJson(String json, SearchResponseDto searchResponse) throws IOException {
         JsonNode venueDtoNode = new ObjectMapper().readTree(json);
-        VenueDto venue = new VenueDto();
-        venue.setId(venueDtoNode.get("response").get("venues").get(0).get("id").textValue());
-        venue.setName(venueDtoNode.get("response").get("venues").get(0).get("name").textValue());
-        venue.setAddress(venueDtoNode.get("response").get("venues").get(0).get("location").get("address").textValue());
-        venue.setPhone(venueDtoNode.get("response").get("venues").get(0).get("contact").get("phone").textValue());
-        return venue;
+        JsonNode jsonNode = venueDtoNode.get("response").get("venues");
+        Iterator<JsonNode> elements = jsonNode.elements();
+        while (elements.hasNext()) {
+            VenueDto venueDto = new VenueDto();
+            JsonNode tempNode = elements.next();
+            venueDto.setId(tempNode.get("id").textValue());
+            venueDto.setName(tempNode.get("name").textValue());
+            venueDto.setPhone(tempNode.get("contact").get("phone").textValue());
+            venueDto.setAddress(tempNode.get("location").get("address").textValue());
+            searchResponse.getVenues().add(venueDto);
+        }
     }
 }

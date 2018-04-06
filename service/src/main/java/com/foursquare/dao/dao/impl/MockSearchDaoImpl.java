@@ -26,6 +26,51 @@ public class MockSearchDaoImpl implements SearchDao {
                 "                    \"lat\": 49.83832099953952,\n" +
                 "                    \"lng\": 24.023289687789234\n" +
                 "\t\t\t\t\t}\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "                \"id\": \"Test 2 id\",\n" +
+                "                \"name\": \"Test 2 name\",\n" +
+                "                \"contact\": {\n" +
+                "                    \"phone\": \"Test 2 number\",\n" +
+                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
+                "                    \"twitter\": \"_novaposhta_\"\n" +
+                "                },\n" +
+                "                \"location\": {\n" +
+                "                    \"address\": \"Test 2 address\",\n" +
+                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
+                "                    \"lat\": 49.83832099953952,\n" +
+                "                    \"lng\": 24.023289687789234\n" +
+                "\t\t\t\t\t}\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "                \"id\": \"Test 3 id\",\n" +
+                "                \"name\": \"Test 3 name\",\n" +
+                "                \"contact\": {\n" +
+                "                    \"phone\": \"Test 3 number\",\n" +
+                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
+                "                    \"twitter\": \"_novaposhta_\"\n" +
+                "                },\n" +
+                "                \"location\": {\n" +
+                "                    \"address\": \"Test 3 address\",\n" +
+                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
+                "                    \"lat\": 49.83832099953952,\n" +
+                "                    \"lng\": 24.023289687789234\n" +
+                "\t\t\t\t\t}\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "                \"id\": \"Test 4 id\",\n" +
+                "                \"name\": \"Test 4 name\",\n" +
+                "                \"contact\": {\n" +
+                "                    \"phone\": \"Test 4 number\",\n" +
+                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
+                "                    \"twitter\": \"_novaposhta_\"\n" +
+                "                },\n" +
+                "                \"location\": {\n" +
+                "                    \"address\": \"Test 4 address\",\n" +
+                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
+                "                    \"lat\": 49.83832099953952,\n" +
+                "                    \"lng\": 24.023289687789234\n" +
+                "\t\t\t\t\t}\n" +
                 "\t\t\t}\n" +
                 "\t\t\t\t\t]\n" +
                 "\t}\n" +
@@ -33,5 +78,4 @@ public class MockSearchDaoImpl implements SearchDao {
 
         return json;
     }
-
 }
