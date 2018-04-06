@@ -20,14 +20,14 @@ public class SearchServiceImpl implements SearchService {
     public SearchResponseDto search(String city, String place) {
         SearchResponseDto searchResponse = new SearchResponseDto();
         try {
-            searchResponse.getVenues().add(jsonMapping(search.search(city, place)));
+            searchResponse.getVenues().add(mapFromJson(search.search(city, place)));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return searchResponse;
     }
 
-    private VenueDto jsonMapping(String json) throws IOException {
+    private VenueDto mapFromJson(String json) throws IOException {
         JsonNode venueDtoNode = new ObjectMapper().readTree(json);
         VenueDto venue = new VenueDto();
         venue.setId(venueDtoNode.get("response").get("venues").get(0).get("id").textValue());

@@ -1,7 +1,6 @@
 package com.foursquare.dao.dao.impl;
 
 import com.foursquare.dao.SearchDao;
-import org.springframework.context.annotation.Bean;
 
 public class MockSearchDaoImpl implements SearchDao {
 
