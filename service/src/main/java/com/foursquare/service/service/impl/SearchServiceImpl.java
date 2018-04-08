@@ -14,7 +14,6 @@ import java.util.*;
 
 @Service
 public class SearchServiceImpl implements SearchService {
-
     @Autowired
     private SearchDao search;
 
@@ -31,14 +30,28 @@ public class SearchServiceImpl implements SearchService {
     private void mapFromJson(String json, SearchResponseDto searchResponse) throws IOException {
         JsonNode venueDtoNode = new ObjectMapper().readTree(json);
         JsonNode jsonNode = venueDtoNode.get("response").get("venues");
-        Iterator<JsonNode> elements = jsonNode.elements();
+        Iterator <JsonNode> elements = jsonNode.elements();
+
         while (elements.hasNext()) {
             VenueDto venueDto = new VenueDto();
             JsonNode tempNode = elements.next();
             venueDto.setId(tempNode.get("id").textValue());
             venueDto.setName(tempNode.get("name").textValue());
-            venueDto.setPhone(tempNode.get("contact").get("phone").textValue());
-            venueDto.setAddress(tempNode.get("location").get("address").textValue());
+
+            JsonNode phone = tempNode.get("contact").get("phone");
+            if (phone != null) {
+                venueDto.setPhone(phone.textValue());
+            } else {
+                venueDto.setPhone("No phone available");
+            }
+
+            JsonNode address = tempNode.get("location").get("address");
+            if (address != null) {
+                venueDto.setAddress(address.textValue());
+            } else {
+                venueDto.setAddress("No address available");
+            }
+
             searchResponse.getVenues().add(venueDto);
         }
     }
