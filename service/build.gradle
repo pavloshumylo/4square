@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: http_client_version
     testCompile group: 'junit', name: 'junit', version: junit_version
     compile project(':common')
 }
