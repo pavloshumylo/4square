@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -31,10 +33,12 @@ public class SearchServiceImpl implements SearchService {
         JsonNode venueDtoNode = new ObjectMapper().readTree(json);
         JsonNode jsonNode = venueDtoNode.get("response").get("venues");
         Iterator <JsonNode> elements = jsonNode.elements();
+        Iterable<JsonNode> iterable = () -> elements;
 
-        while (elements.hasNext()) {
+        Stream<JsonNode> stream  = StreamSupport.stream(iterable.spliterator(), false);
+        stream.forEach((node) -> {
             VenueDto venueDto = new VenueDto();
-            JsonNode tempNode = elements.next();
+            JsonNode tempNode = node;
             venueDto.setId(tempNode.get("id").textValue());
             venueDto.setName(tempNode.get("name").textValue());
 
@@ -51,8 +55,7 @@ public class SearchServiceImpl implements SearchService {
             } else {
                 venueDto.setAddress("No address available");
             }
-
             searchResponse.getVenues().add(venueDto);
-        }
+        });
     }
 }
