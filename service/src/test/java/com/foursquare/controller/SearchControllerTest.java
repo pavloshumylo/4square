@@ -29,7 +29,7 @@ public class SearchControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper mapper;
-    private SearchResponseDto searchResponseDto;
+    private SearchResponseDto searchResponseDtoExpected;
 
     @Before
     public void init() {
@@ -37,18 +37,18 @@ public class SearchControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
         mapper = new ObjectMapper();
 
-        searchResponseDto = new SearchResponseDto();
+        searchResponseDtoExpected = new SearchResponseDto();
         VenueDto venueDto = new VenueDto();
             venueDto.setId("1");
             venueDto.setName("TestName 1");
             venueDto.setPhone("TestPhone 1");
             venueDto.setAddress("TestAddress 1");
-            searchResponseDto.getVenues().add(venueDto);
+            searchResponseDtoExpected.getVenues().add(venueDto);
         }
 
     @Test
     public void testSearch_ShouldReturnSearchResponseDto() throws Exception {
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDto);
+        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
         MvcResult mvcResult = mockMvc.perform(get("/search")
                 .param("near", "testCity")
                 .param("query", "testPlace"))
@@ -56,11 +56,21 @@ public class SearchControllerTest {
                 .andReturn();
 
         String responseString = mvcResult.getResponse().getContentAsString();
-        SearchResponseDto resultSearchResponseDto = mapper.readValue(responseString, SearchResponseDto.class);
+        SearchResponseDto searchResponseDtoActual = mapper.readValue(responseString, SearchResponseDto.class);
 
-        assertEquals(searchResponseDto.getVenues().get(0).getId(), resultSearchResponseDto.getVenues().get(0).getId());
-        assertEquals(searchResponseDto.getVenues().get(0).getName(), resultSearchResponseDto.getVenues().get(0).getName());
-        assertEquals(searchResponseDto.getVenues().get(0).getPhone(), resultSearchResponseDto.getVenues().get(0).getPhone());
-        assertEquals(searchResponseDto.getVenues().get(0).getAddress(), resultSearchResponseDto.getVenues().get(0).getAddress());
+        assertEquals(searchResponseDtoExpected.getVenues().size(),
+                searchResponseDtoActual.getVenues().size());
+
+        assertEquals(searchResponseDtoExpected.getVenues().get(0).getId(),
+                searchResponseDtoActual.getVenues().get(0).getId());
+
+        assertEquals(searchResponseDtoExpected.getVenues().get(0).getName(),
+                searchResponseDtoActual.getVenues().get(0).getName());
+
+        assertEquals(searchResponseDtoExpected.getVenues().get(0).getPhone(),
+                searchResponseDtoActual.getVenues().get(0).getPhone());
+
+        assertEquals(searchResponseDtoExpected.getVenues().get(0).getAddress(),
+                searchResponseDtoActual.getVenues().get(0).getAddress());
     }
 }
