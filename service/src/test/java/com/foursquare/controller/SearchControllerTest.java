@@ -58,9 +58,16 @@ public class SearchControllerTest {
         String responseString = mvcResult.getResponse().getContentAsString();
         SearchResponseDto resultSearchResponseDto = mapper.readValue(responseString, SearchResponseDto.class);
 
-        assertEquals(searchResponseDto.getVenues().get(0).getId(), resultSearchResponseDto.getVenues().get(0).getId());
-        assertEquals(searchResponseDto.getVenues().get(0).getName(), resultSearchResponseDto.getVenues().get(0).getName());
-        assertEquals(searchResponseDto.getVenues().get(0).getPhone(), resultSearchResponseDto.getVenues().get(0).getPhone());
-        assertEquals(searchResponseDto.getVenues().get(0).getAddress(), resultSearchResponseDto.getVenues().get(0).getAddress());
+        assertEquals(searchResponseDto.getVenues().get(0).getId(), 
+        resultSearchResponseDto.getVenues().get(0).getId());
+        
+        assertEquals(searchResponseDto.getVenues().get(0).getName(), 
+        resultSearchResponseDto.getVenues().get(0).getName());
+        
+        assertEquals(searchResponseDto.getVenues().get(0).getPhone(), 
+        resultSearchResponseDto.getVenues().get(0).getPhone());
+        
+        assertEquals(searchResponseDto.getVenues().get(0).getAddress(), 
+        resultSearchResponseDto.getVenues().get(0).getAddress());
     }
 }
