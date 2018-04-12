@@ -1,52 +1,69 @@
-package com.foursquare.controller;
+package com.foursquare.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foursquare.controller.SearchController;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
-import com.foursquare.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SearchControllerTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class SearchControllerIntegrationTest {
 
-    @InjectMocks
+    @Autowired
     private SearchController searchController;
-
-    @Mock
-    private SearchService searchService;
 
     private MockMvc mockMvc;
     private SearchResponseDto searchResponseDtoExpected;
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
-
         searchResponseDtoExpected = new SearchResponseDto();
-        VenueDto venueDto = new VenueDto();
-            venueDto.setId("1");
-            venueDto.setName("TestName 1");
-            venueDto.setPhone("TestPhone 1");
-            venueDto.setAddress("TestAddress 1");
-            searchResponseDtoExpected.getVenues().add(venueDto);
-        }
+
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("535a021d498ed71c77ed20e7");
+        venueDtoExpected.setName("Нова пошта (відділення №14)");
+        venueDtoExpected.setPhone("+380322901911");
+        venueDtoExpected.setAddress("вул. Словацького, 5");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 2 id");
+        venueDtoExpected.setName("Test 2 name");
+        venueDtoExpected.setPhone("Test 2 number");
+        venueDtoExpected.setAddress("Test 2 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 3 id");
+        venueDtoExpected.setName("Test 3 name");
+        venueDtoExpected.setPhone("Test 3 number");
+        venueDtoExpected.setAddress("Test 3 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 4 id");
+        venueDtoExpected.setName("Test 4 name");
+        venueDtoExpected.setPhone("Test 4 number");
+        venueDtoExpected.setAddress("Test 4 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+    }
 
     @Test
-    public void testSearch_ShouldReturnSearchResponseDto() throws Exception {
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
+    public void testController_ShouldReturnSearchResponseDto() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/search")
                 .param("near", "testCity")
                 .param("query", "testPlace"))
@@ -74,9 +91,9 @@ public class SearchControllerTest {
                 searchResponseDtoActual.getVenues().get(0).getAddress());
     }
 
+
     @Test
-    public void testSearch_ShouldDetectBadRequestError() throws Exception {
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
+    public void testController_ShouldDetectBadRequestError() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/search")
                 .param("near", "testCity")
                 .param("queryChanged", "testPlace"))
@@ -85,8 +102,7 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void testSearch_ShouldDetectNotFoundError() throws Exception{
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
+    public void testController_ShouldDetectNotFoundError() throws Exception{
         MvcResult mvcResult = mockMvc.perform(get("/searchChanged")
                 .param("near", "testCity")
                 .param("query", "testPlace"))

@@ -1,39 +1,28 @@
-package com.foursquare.service;
+package com.foursquare.integration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foursquare.dao.SearchDao;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
-import com.foursquare.service.service.impl.SearchServiceImpl;
+import com.foursquare.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.io.IOException;
-import java.io.InputStream;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
-public class SearchServiceImplTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class SearchServiceIntegrationTest {
 
-    @InjectMocks
-    private SearchServiceImpl searchService;
+    @Autowired
+    private SearchService searchService;
 
-    @Mock
-    private SearchDao searchDao;
-
-    private String jsonFromDao;
     private SearchResponseDto searchResponseDtoExpected;
 
     @Before
-    public void init() throws IOException {
-        MockitoAnnotations.initMocks(this);
+    public void init() {
         searchResponseDtoExpected = new SearchResponseDto();
 
         VenueDto venueDtoExpected = new VenueDto();
@@ -63,16 +52,10 @@ public class SearchServiceImplTest {
         venueDtoExpected.setPhone("Test 4 number");
         venueDtoExpected.setAddress("Test 4 address");
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("jsonExpectedFromDao.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonFromDao = jsonNode.toString();
     }
 
     @Test
     public void testSearchService_ShouldReturnSearchResponseDto() {
-        when(searchDao.search(any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace");
 
         assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
@@ -91,12 +74,5 @@ public class SearchServiceImplTest {
 
         assertEquals(searchResponseDtoExpected.getVenues().get(0).getPhone(),
                 searchResponseDtoActual.getVenues().get(0).getPhone());
-    }
-
-    @Test
-    public void testSearch_ShouldReturnNull() {
-        when(searchDao.search(any(String.class), any(String.class))).thenReturn("JsonNode");
-        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace");
-        assertNull(searchResponseDtoActual);
     }
 }

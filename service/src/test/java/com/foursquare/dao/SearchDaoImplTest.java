@@ -15,7 +15,8 @@ public class SearchDaoImplTest {
     }
 
     @Test(expected = NotImplementedException.class)
-    public void testSearch_ShouldReturnException() {
+    public void testSearch_ShouldReturnNotImplementedException()
+    {
         searchDao.search("testCity", "testPlace");
     }
 }
