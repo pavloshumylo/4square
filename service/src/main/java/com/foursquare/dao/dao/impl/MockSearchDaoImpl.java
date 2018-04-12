@@ -1,81 +1,22 @@
 package com.foursquare.dao.dao.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MockSearchDaoImpl implements SearchDao {
 
     public String search(String city, String place) {
-        String json = "{\n" +
-                "    \"meta\": {\n" +
-                "        \"code\": 200,\n" +
-                "        \"requestId\": \"5ac5eb54351e3d4df8cebb05\"\n" +
-                "    },\n" +
-                "    \"response\": {\n" +
-                "        \"venues\": [\n" +
-                "            {\n" +
-                "                \"id\": \"535a021d498ed71c77ed20e7\",\n" +
-                "                \"name\": \"Нова пошта (відділення №14)\",\n" +
-                "                \"contact\": {\n" +
-                "                    \"phone\": \"+380322901911\",\n" +
-                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
-                "                    \"twitter\": \"_novaposhta_\"\n" +
-                "                },\n" +
-                "                \"location\": {\n" +
-                "                    \"address\": \"вул. Словацького, 5\",\n" +
-                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
-                "                    \"lat\": 49.83832099953952,\n" +
-                "                    \"lng\": 24.023289687789234\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t},\n" +
-                "\t\t\t{\n" +
-                "                \"id\": \"Test 2 id\",\n" +
-                "                \"name\": \"Test 2 name\",\n" +
-                "                \"contact\": {\n" +
-                "                    \"phone\": \"Test 2 number\",\n" +
-                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
-                "                    \"twitter\": \"_novaposhta_\"\n" +
-                "                },\n" +
-                "                \"location\": {\n" +
-                "                    \"address\": \"Test 2 address\",\n" +
-                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
-                "                    \"lat\": 49.83832099953952,\n" +
-                "                    \"lng\": 24.023289687789234\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t},\n" +
-                "\t\t\t{\n" +
-                "                \"id\": \"Test 3 id\",\n" +
-                "                \"name\": \"Test 3 name\",\n" +
-                "                \"contact\": {\n" +
-                "                    \"phone\": \"Test 3 number\",\n" +
-                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
-                "                    \"twitter\": \"_novaposhta_\"\n" +
-                "                },\n" +
-                "                \"location\": {\n" +
-                "                    \"address\": \"Test 3 address\",\n" +
-                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
-                "                    \"lat\": 49.83832099953952,\n" +
-                "                    \"lng\": 24.023289687789234\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t},\n" +
-                "\t\t\t{\n" +
-                "                \"id\": \"Test 4 id\",\n" +
-                "                \"name\": \"Test 4 name\",\n" +
-                "                \"contact\": {\n" +
-                "                    \"phone\": \"Test 4 number\",\n" +
-                "                    \"formattedPhone\": \"+380 322 901 911\",\n" +
-                "                    \"twitter\": \"_novaposhta_\"\n" +
-                "                },\n" +
-                "                \"location\": {\n" +
-                "                    \"address\": \"Test 4 address\",\n" +
-                "                    \"crossStreet\": \"вул. Петра Дорошенка\",\n" +
-                "                    \"lat\": 49.83832099953952,\n" +
-                "                    \"lng\": 24.023289687789234\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t}\n" +
-                "\t\t\t\t\t]\n" +
-                "\t}\n" +
-                "}";
-
-        return json;
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("jsonExpectedFromDao.json");
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonNode.toString();
     }
 }
