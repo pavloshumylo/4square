@@ -1,0 +1,9 @@
+spring:
+    profiles.active: dev
+---
+spring:
+  profiles: dev
+fourSquareApiHost: https://api.foursquare.com/
+fourSquareApiClientId: E4WJZ5EZL2FP3LOGJVCWMMQDJOYB02JKJIMZ20DRZHYR5ZOT
+fourSquareApiClientSecret: J0RZKSNJZH1ZHEGS2R0YJ5EDT4DS4CHDNMCBHIETS53CJS4Y
+fourSquareApiVersion: 20180403
