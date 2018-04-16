@@ -4,7 +4,7 @@ import com.foursquare.dao.SearchDao;
 
 public class MockSearchDaoImpl implements SearchDao {
 
-    public String search(String city, String place) {
+    public String search(String city, String query, String limit) {
         String json = "{\n" +
                 "    \"meta\": {\n" +
                 "        \"code\": 200,\n" +
