@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -65,7 +64,7 @@ public class SearchServiceImplTest {
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("jsonExpectedFromDao.json");
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         jsonFromDao = jsonNode.toString();
     }
@@ -91,12 +90,5 @@ public class SearchServiceImplTest {
 
         assertEquals(searchResponseDtoExpected.getVenues().get(0).getPhone(),
                 searchResponseDtoActual.getVenues().get(0).getPhone());
-    }
-
-    @Test
-    public void testSearch_ShouldReturnNull() {
-        when(searchDao.search(any(String.class), any(String.class))).thenReturn("JsonNode");
-        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace");
-        assertNull(searchResponseDtoActual);
     }
 }

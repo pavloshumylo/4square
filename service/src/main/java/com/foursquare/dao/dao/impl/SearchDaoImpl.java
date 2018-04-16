@@ -1,7 +1,6 @@
 package com.foursquare.dao.dao.impl;
 
 import com.foursquare.dao.SearchDao;
-import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SearchDaoImpl implements SearchDao {

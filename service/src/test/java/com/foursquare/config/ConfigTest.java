@@ -1,7 +1,6 @@
 package com.foursquare.config;
 
 import com.foursquare.dao.SearchDao;
-import com.foursquare.dao.config.Config;
 import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;

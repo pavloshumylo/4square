@@ -73,25 +73,4 @@ public class SearchControllerTest {
         assertEquals(searchResponseDtoExpected.getVenues().get(0).getAddress(),
                 searchResponseDtoActual.getVenues().get(0).getAddress());
     }
-
-    @Test
-    public void testSearch_ShouldDetectBadRequestError() throws Exception {
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
-        MvcResult mvcResult = mockMvc.perform(get("/search")
-                .param("near", "testCity")
-                .param("queryChanged", "testPlace"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
-
-    @Test
-    public void testSearch_ShouldDetectNotFoundError() throws Exception{
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
-        MvcResult mvcResult = mockMvc.perform(get("/searchChanged")
-                .param("near", "testCity")
-                .param("query", "testPlace"))
-                .andExpect(status().isNotFound())
-                .andReturn();
-    }
-
 }

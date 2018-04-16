@@ -90,24 +90,4 @@ public class SearchControllerIntegrationTest {
         assertEquals(searchResponseDtoExpected.getVenues().get(0).getAddress(),
                 searchResponseDtoActual.getVenues().get(0).getAddress());
     }
-
-
-    @Test
-    public void testController_ShouldDetectBadRequestError() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/search")
-                .param("near", "testCity")
-                .param("queryChanged", "testPlace"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
-
-    @Test
-    public void testController_ShouldDetectNotFoundError() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(get("/searchChanged")
-                .param("near", "testCity")
-                .param("query", "testPlace"))
-                .andExpect(status().isNotFound())
-                .andReturn();
-    }
-
 }
