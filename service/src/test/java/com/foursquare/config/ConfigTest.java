@@ -2,7 +2,7 @@ package com.foursquare.config;
 
 import com.foursquare.dao.SearchDao;
 import com.foursquare.dao.config.Config;
-import com.foursquare.dao.dao.impl.SearchDaoImpl;
+import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,6 @@ public class ConfigTest {
     @Test
     public void testConfig_ShouldReturnMockSearchDaoImpl() {
         SearchDao searchDaoReturned = config.searchDao();
-        assertTrue(searchDaoReturned instanceof SearchDaoImpl);
+        assertTrue(searchDaoReturned instanceof MockSearchDaoImpl);
     }
 }

@@ -2,18 +2,13 @@ package com.foursquare.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.controller.SearchController;
-import com.foursquare.dao.SearchDao;
-import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
-import com.foursquare.service.SearchService;
-import com.foursquare.service.service.impl.SearchServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class SearchControllerIntegrationTest {
 
     @Autowired
@@ -114,22 +110,4 @@ public class SearchControllerIntegrationTest {
                 .andReturn();
     }
 
-    @TestConfiguration
-    static class ContextConfiguration {
-
-        @Bean
-        public SearchController searchController() {
-            return new SearchController();
-        }
-
-        @Bean
-        public SearchService searchService() {
-            return new SearchServiceImpl();
-        }
-
-        @Bean
-        public SearchDao searchDao(){
-            return new MockSearchDaoImpl();
-        }
-    }
 }
