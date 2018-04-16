@@ -4,5 +4,5 @@ import com.foursquare.dto.SearchResponseDto;
 
 public interface SearchService {
 
-     SearchResponseDto search(String city, String limit);
+     SearchResponseDto search(String city, String place);
 }

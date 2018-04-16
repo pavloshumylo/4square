@@ -16,10 +16,10 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SearchDao search;
 
-    public SearchResponseDto search(String city, String limit) {
+    public SearchResponseDto search(String city, String place) {
         SearchResponseDto searchResponse = null;
         try {
-            searchResponse = mapFromJson(search.search(city, limit));
+            searchResponse = mapFromJson(search.search(city, place));
         } catch (IOException e) {
             e.printStackTrace();
         }
