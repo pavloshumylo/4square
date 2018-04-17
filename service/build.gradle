@@ -12,5 +12,7 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     testCompile group: 'junit', name: 'junit', version: junit_version
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
     compile project(':common')
 }
