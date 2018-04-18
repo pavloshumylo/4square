@@ -1,5 +1,9 @@
-.gradle/*
-.idea/*
-classes/*
-out/*
-
+.gradle/
+.idea/
+classes/
+out/
+build/
+client/build
+common/build
+cron/build
+service/build
