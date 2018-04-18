@@ -17,17 +17,20 @@ public class SearchServiceImpl implements SearchService {
     private SearchDao search;
 
     public SearchResponseDto search(String city, String place) {
-        SearchResponseDto searchResponse = new SearchResponseDto();
-        try {
-            mapFromJson(search.search(city, place), searchResponse);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SearchResponseDto searchResponse = mapFromJson(search.search(city, place));
         return searchResponse;
     }
 
-    private void mapFromJson(String json, SearchResponseDto searchResponse) throws IOException {
-        JsonNode jsonNode = new ObjectMapper().readTree(json);
+    private SearchResponseDto mapFromJson(String json) {
+        SearchResponseDto searchResponse = new SearchResponseDto();
+
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = new ObjectMapper().readTree(json);
+        } catch (IOException e) {
+            throw  new RuntimeException(e);
+        }
+
         JsonNode venuesNode = jsonNode.get("response").get("venues");
         venuesNode.forEach((venueNode) -> {
             VenueDto venueDto = new VenueDto();
@@ -49,5 +52,7 @@ public class SearchServiceImpl implements SearchService {
             }
             searchResponse.getVenues().add(venueDto);
         });
+
+        return searchResponse;
     }
 }

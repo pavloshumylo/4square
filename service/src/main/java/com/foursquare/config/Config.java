@@ -1,8 +1,7 @@
-package com.foursquare.dao.config;
+package com.foursquare.config;
 
 import com.foursquare.dao.SearchDao;
 import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
-import com.foursquare.dao.dao.impl.SearchDaoImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

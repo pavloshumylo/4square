@@ -1,5 +1,7 @@
 package com.foursquare.dto;
 
+import com.google.common.base.Objects;
+
 public class VenueDto {
 
     private String id;
@@ -39,5 +41,19 @@ public class VenueDto {
         this.address = address;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VenueDto venueDto = (VenueDto) o;
+        return Objects.equal(id, venueDto.id) &&
+                Objects.equal(name, venueDto.name) &&
+                Objects.equal(phone, venueDto.phone) &&
+                Objects.equal(address, venueDto.address);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, phone, address);
+    }
 }
