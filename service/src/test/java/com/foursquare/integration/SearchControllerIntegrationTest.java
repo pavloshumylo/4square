@@ -1,10 +1,15 @@
 package com.foursquare.integration;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foursquare.config.FourSquareProperties;
 import com.foursquare.controller.SearchController;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import java.io.IOException;
+import java.io.InputStream;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,14 +31,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class SearchControllerIntegrationTest {
 
+    private static final String APPLICATION_JSON_VALUE ="application/json;charset=UTF-8";
+
     @Autowired
     private SearchController searchController;
+    @Autowired
+    private FourSquareProperties fourSquareProperties;
 
     private MockMvc mockMvc;
     private SearchResponseDto searchResponseDtoExpected;
+    private String jsonExpected;
+
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
 
     @Before
-    public void init() {
+    public void init() throws IOException {
+        fourSquareProperties.setApiHost("http://localhost:"+wireMockRule.port()+"/");
+
         mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
         searchResponseDtoExpected = new SearchResponseDto();
 
@@ -60,10 +79,21 @@ public class SearchControllerIntegrationTest {
         venueDtoExpected.setPhone("Test 4 number");
         venueDtoExpected.setAddress("Test 4 address");
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        jsonExpected = jsonNode.toString();
     }
 
     @Test
     public void testController_ShouldReturnSearchResponseDto() throws Exception {
+        stubFor(WireMock.get(urlMatching("/v2/venues/.*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", APPLICATION_JSON_VALUE)
+                        .withBody(jsonExpected)));
+
         MvcResult mvcResult = mockMvc.perform(get("/search")
                 .param("near", "testCity")
                 .param("query", "testPlace")
