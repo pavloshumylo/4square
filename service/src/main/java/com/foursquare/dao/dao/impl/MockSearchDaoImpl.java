@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class MockSearchDaoImpl implements SearchDao {
 
-    public String search(String city, String place) {
+    public String search(String city, String place, String limit) {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("mockDaoResponse.json");
         JsonNode jsonNode = null;

@@ -71,8 +71,8 @@ public class SearchServiceImplTest {
 
     @Test
     public void testSearchService_ShouldReturnSearchResponseDto() {
-        when(searchDao.search(any(String.class), any(String.class))).thenReturn(jsonFromDao);
-        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace");
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
+        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
 
         assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
 

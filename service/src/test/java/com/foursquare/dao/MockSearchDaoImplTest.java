@@ -25,7 +25,7 @@ public class MockSearchDaoImplTest {
 
     @Test
     public void testSearch_ShouldReturnJson() {
-        String jsonReturned = searchDao.search("testCity", "testPlace");
+        String jsonReturned = searchDao.search("testCity", "testPlace", "testLimit");
         assertEquals(jsonExpected, jsonReturned);
     }
 }

@@ -12,7 +12,7 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping(value = "/search")
-    public SearchResponseDto search(@RequestParam(value = "near") String near, @RequestParam(value = "query") String query) {
-        return searchService.search(near, query);
+    public SearchResponseDto search(@RequestParam(value = "near") String near, @RequestParam(value = "query") String query, @RequestParam(value = "limit") String limit) {
+        return searchService.search(near, query, limit);
     }
 }

@@ -46,10 +46,11 @@ public class SearchControllerTest {
 
     @Test
     public void testSearch_ShouldReturnSearchResponseDto() throws Exception {
-        when(searchService.search(any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
+        when(searchService.search(any(String.class), any(String.class), any(String.class))).thenReturn(searchResponseDtoExpected);
         MvcResult mvcResult = mockMvc.perform(get("/search")
                 .param("near", "testCity")
-                .param("query", "testPlace"))
+                .param("query", "testPlace")
+                .param("limit", "testLimit"))
                 .andExpect(status().isOk())
                 .andReturn();
 

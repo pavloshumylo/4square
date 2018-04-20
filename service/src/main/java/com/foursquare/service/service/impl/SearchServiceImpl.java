@@ -16,8 +16,8 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SearchDao search;
 
-    public SearchResponseDto search(String city, String place) {
-        SearchResponseDto searchResponse = mapFromJson(search.search(city, place));
+    public SearchResponseDto search(String city, String place, String limit) {
+        SearchResponseDto searchResponse = mapFromJson(search.search(city, place, limit));
         return searchResponse;
     }
 
