@@ -83,7 +83,7 @@ public class SearchControllerIntegrationTest {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonExpected = jsonNode.toString();
+        jsonExpected = jsonNode.get("testJsons").get(0).toString();
     }
 
     @Test

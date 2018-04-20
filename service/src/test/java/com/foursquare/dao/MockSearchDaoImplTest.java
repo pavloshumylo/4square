@@ -1,13 +1,14 @@
 package com.foursquare.dao;
-import static org.junit.Assert.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
 
 public class MockSearchDaoImplTest {
 
@@ -19,7 +20,7 @@ public class MockSearchDaoImplTest {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonExpected = jsonNode.toString();
+        jsonExpected = jsonNode.get("testJsons").get(0).toString();
         searchDao = new MockSearchDaoImpl();
     }
 

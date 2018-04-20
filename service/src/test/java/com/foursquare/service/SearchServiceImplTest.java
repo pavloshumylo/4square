@@ -31,10 +31,13 @@ public class SearchServiceImplTest {
     private SearchResponseDto searchResponseDtoExpected;
 
     @Before
-    public void init() throws IOException {
+    public void init() {
         MockitoAnnotations.initMocks(this);
         searchResponseDtoExpected = new SearchResponseDto();
+    }
 
+    @Test
+    public void testSearchService_ShouldReturnSearchResponseDto() throws IOException {
         VenueDto venueDtoExpected = new VenueDto();
         venueDtoExpected.setId("535a021d498ed71c77ed20e7");
         venueDtoExpected.setName("Нова пошта (відділення №14)");
@@ -66,11 +69,8 @@ public class SearchServiceImplTest {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonFromDao = jsonNode.toString();
-    }
+        jsonFromDao = jsonNode.get("testJsons").get(0).toString();
 
-    @Test
-    public void testSearchService_ShouldReturnSearchResponseDto() {
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
 
@@ -90,5 +90,95 @@ public class SearchServiceImplTest {
 
         assertEquals(searchResponseDtoExpected.getVenues().get(0).getPhone(),
                 searchResponseDtoActual.getVenues().get(0).getPhone());
+    }
+
+    @Test
+    public void testSearchService_ShouldReturnEmptySearchResponseDto() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        jsonFromDao = jsonNode.get("testJsons").get(1).toString();
+
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
+        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
+
+        assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
+
+        assertEquals(searchResponseDtoExpected.getVenues().size(),
+                searchResponseDtoActual.getVenues().size());
+    }
+
+    @Test
+    public void testSearchService_ShouldReturnDtosWithId() throws IOException {
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 2 id");
+        venueDtoExpected.setName("Test 2 name");
+        venueDtoExpected.setPhone("Test 2 number");
+        venueDtoExpected.setAddress("Test 2 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 3 id");
+        venueDtoExpected.setName("Test 3 name");
+        venueDtoExpected.setPhone("Test 3 number");
+        venueDtoExpected.setAddress("Test 3 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 4 id");
+        venueDtoExpected.setName("Test 4 name");
+        venueDtoExpected.setPhone("Test 4 number");
+        venueDtoExpected.setAddress("Test 4 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        jsonFromDao = jsonNode.get("testJsons").get(2).toString();
+
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
+        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
+
+        assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
+    }
+
+    @Test
+    public void testSearchService_ShouldReturnDtoWithIdNamePhoneAddress() throws IOException {
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("Test 2 id");
+        venueDtoExpected.setName("Test 2 name");
+        venueDtoExpected.setPhone("Test 2 number");
+        venueDtoExpected.setAddress("Test 2 address");
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        jsonFromDao = jsonNode.get("testJsons").get(3).toString();
+
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
+        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
+
+        assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
+    }
+
+    @Test
+    public void testSearchService_ShouldReturnDtoWithNullAtNameAddressFields() throws IOException {
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("535a021d498ed71c77ed20e7");
+        venueDtoExpected.setName(null);
+        venueDtoExpected.setPhone("+380322901911");
+        venueDtoExpected.setAddress(null);
+        searchResponseDtoExpected.getVenues().add(venueDtoExpected);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+        jsonFromDao = jsonNode.get("testJsons").get(4).toString();
+
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
+        SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
+
+        assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
     }
 }

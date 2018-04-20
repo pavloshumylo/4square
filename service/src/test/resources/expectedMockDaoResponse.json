@@ -1,70 +1,244 @@
 {
-  "meta": {
-    "code": 200,
-    "requestId": "5ac5eb54351e3d4df8cebb05"
+"testJsons": [
+  {
+    "meta": {
+      "code": 200,
+      "requestId": "5ac5eb54351e3d4df8cebb05"
+    },
+    "response": {
+      "venues": [
+        {
+          "id": "535a021d498ed71c77ed20e7",
+          "name": "Нова пошта (відділення №14)",
+          "contact": {
+            "phone": "+380322901911",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "вул. Словацького, 5",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 2 id",
+          "name": "Test 2 name",
+          "contact": {
+            "phone": "Test 2 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 2 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 3 id",
+          "name": "Test 3 name",
+          "contact": {
+            "phone": "Test 3 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 3 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 4 id",
+          "name": "Test 4 name",
+          "contact": {
+            "phone": "Test 4 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 4 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        }
+      ]
+    }
   },
-  "response": {
-    "venues": [
-      {
-        "id": "535a021d498ed71c77ed20e7",
-        "name": "Нова пошта (відділення №14)",
-        "contact": {
-          "phone": "+380322901911",
-          "formattedPhone": "+380 322 901 911",
-          "twitter": "_novaposhta_"
+  {
+    "meta": {
+      "code": 200,
+      "requestId": "5ad88e22f594df0e54fe09c1"
+    },
+    "response": {
+      "venues": [],
+      "geocode": {
+        "what": "",
+        "where": "ternopil",
+        "feature": {
+          "cc": "UA",
+          "name": "Ternopil",
+          "displayName": "Ternopil, Ukraine",
+          "matchedName": "Ternopil, Ukraine",
+          "highlightedName": "<b>Ternopil</b>, Ukraine",
+          "woeType": 7,
+          "slug": "ternopil-ukraine",
+          "id": "geonameid:691650",
+          "longId": "72057594038619586",
+          "geometry": {
+            "center": {
+              "lat": 49.55589,
+              "lng": 25.60556
+            },
+            "bounds": {
+              "ne": {
+                "lat": 49.593581999999856,
+                "lng": 25.654636999999923
+              },
+              "sw": {
+                "lat": 49.504852499999856,
+                "lng": 25.543103999999857
+              }
+            }
+          }
         },
-        "location": {
-          "address": "вул. Словацького, 5",
-          "crossStreet": "вул. Петра Дорошенка",
-          "lat": 49.83832099953952,
-          "lng": 24.023289687789234
-        }
-      },
-      {
-        "id": "Test 2 id",
-        "name": "Test 2 name",
-        "contact": {
-          "phone": "Test 2 number",
-          "formattedPhone": "+380 322 901 911",
-          "twitter": "_novaposhta_"
-        },
-        "location": {
-          "address": "Test 2 address",
-          "crossStreet": "вул. Петра Дорошенка",
-          "lat": 49.83832099953952,
-          "lng": 24.023289687789234
-        }
-      },
-      {
-        "id": "Test 3 id",
-        "name": "Test 3 name",
-        "contact": {
-          "phone": "Test 3 number",
-          "formattedPhone": "+380 322 901 911",
-          "twitter": "_novaposhta_"
-        },
-        "location": {
-          "address": "Test 3 address",
-          "crossStreet": "вул. Петра Дорошенка",
-          "lat": 49.83832099953952,
-          "lng": 24.023289687789234
-        }
-      },
-      {
-        "id": "Test 4 id",
-        "name": "Test 4 name",
-        "contact": {
-          "phone": "Test 4 number",
-          "formattedPhone": "+380 322 901 911",
-          "twitter": "_novaposhta_"
-        },
-        "location": {
-          "address": "Test 4 address",
-          "crossStreet": "вул. Петра Дорошенка",
-          "lat": 49.83832099953952,
-          "lng": 24.023289687789234
-        }
+        "parents": []
       }
-    ]
+    }
+  },
+  {
+    "meta": {
+      "code": 200,
+      "requestId": "5ac5eb54351e3d4df8cebb05"
+    },
+    "response": {
+      "venues": [
+        {
+          "name": "Нова пошта (відділення №14)",
+          "contact": {
+            "phone": "+380322901911",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "вул. Словацького, 5",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 2 id",
+          "name": "Test 2 name",
+          "contact": {
+            "phone": "Test 2 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 2 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 3 id",
+          "name": "Test 3 name",
+          "contact": {
+            "phone": "Test 3 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 3 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 4 id",
+          "name": "Test 4 name",
+          "contact": {
+            "phone": "Test 4 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 4 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        }
+      ]
+    }
+  },
+  {
+    "meta": {
+      "code": 200,
+      "requestId": "5ac5eb54351e3d4df8cebb05"
+    },
+    "response": {
+      "venues": [
+        {
+          "id": "535a021d498ed71c77ed20e7",
+          "contact": {
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        },
+        {
+          "id": "Test 2 id",
+          "name": "Test 2 name",
+          "contact": {
+            "phone": "Test 2 number",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "address": "Test 2 address",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        }
+      ]
+    }
+  },
+  {
+    "meta": {
+      "code": 200,
+      "requestId": "5ac5eb54351e3d4df8cebb05"
+    },
+    "response": {
+      "venues": [
+        {
+          "id": "535a021d498ed71c77ed20e7",
+          "contact": {
+            "phone": "+380322901911",
+            "formattedPhone": "+380 322 901 911",
+            "twitter": "_novaposhta_"
+          },
+          "location": {
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234
+          }
+        }
+      ]
+    }
   }
+]
 }
