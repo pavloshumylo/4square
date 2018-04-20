@@ -7,7 +7,6 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
 
@@ -15,8 +14,7 @@ public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
     public void handleError(ClientHttpResponse response) {
         JsonNode jsonNode = null;
         try {
-            InputStream inputStream = response.getBody();
-            jsonNode = new ObjectMapper().readTree(inputStream);
+            jsonNode = new ObjectMapper().readTree(response.getBody());
         } catch (IOException e) {
             throw  new RuntimeException(e);
         }

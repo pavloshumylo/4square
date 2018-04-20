@@ -10,8 +10,6 @@ import com.foursquare.validator.JsonResponseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
@@ -28,7 +26,7 @@ public class SearchServiceImpl implements SearchService {
         JsonNode jsonNode = null;
         try {
             jsonNode = new ObjectMapper().readTree(json);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw  new RuntimeException(e);
         }
 

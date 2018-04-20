@@ -1,11 +1,13 @@
 package com.foursquare.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
 import com.foursquare.service.service.impl.SearchServiceImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -109,7 +112,7 @@ public class SearchServiceImplTest {
     }
 
     @Test
-    public void testSearchService_ShouldReturnDtosWithId() throws IOException {
+    public void testSearchService_ShouldReturnDtosWhereIdPresent() throws IOException {
         VenueDto venueDtoExpected = new VenueDto();
         venueDtoExpected.setId("Test 2 id");
         venueDtoExpected.setName("Test 2 name");
@@ -180,5 +183,27 @@ public class SearchServiceImplTest {
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
 
         assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
+    }
+
+    @Test
+    public void testSearchService_ShouldThrowNullPointerException() {
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(null);
+        try {
+            searchService.search("testCity", "testPlace", "testLimit");
+            Assert.fail();
+        } catch (Exception ex) {
+            assertTrue(ex.getCause() instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void testSearchService_ShouldThrowJsonParseException() {
+        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn("badjson");
+        try {
+            searchService.search("testCity", "testPlace", "testLimit");
+            Assert.fail();
+        } catch (Exception ex) {
+            assertTrue(ex.getCause() instanceof JsonParseException);
+        }
     }
 }

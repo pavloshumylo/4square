@@ -23,9 +23,9 @@ public class ErrorResponseExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleHttpClientErrorException_ShouldReturnErrorResponseDto() {
+    public void testHandleFourSquareApiException_ShouldReturnErrorResponseDto() {
         ErrorResponseDto errorResponseDtoActual = errorResponseExceptionHandler.
-                handleHttpClientErrorException(fourSquareApiException);
+                handleFourSquareApiException(fourSquareApiException);
         assertEquals(errorResponseDtoExpected, errorResponseDtoActual);
     }
 }
