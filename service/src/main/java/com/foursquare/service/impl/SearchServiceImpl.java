@@ -30,29 +30,29 @@ public class SearchServiceImpl implements SearchService {
             throw  new RuntimeException(e);
         }
 
-        JsonNode venuesNode = jsonNode.get("response").get("venues");
-        venuesNode.forEach((venueNode) -> {
-            if(VenueValidatorFromDaoResponse.isValidVenue(venueNode)) {
-                VenueDto venueDto = new VenueDto();
-                venueDto.setId(venueNode.get("id").textValue());
+        if (jsonNode.get("response") != null && jsonNode.get("response").get("venues") != null) {
+            JsonNode venuesNode = jsonNode.get("response").get("venues");
+            venuesNode.forEach((venueNode) -> {
+                if (VenueValidatorFromDaoResponse.isValidVenue(venueNode)) {
+                    VenueDto venueDto = new VenueDto();
+                    venueDto.setId(venueNode.get("id").textValue());
 
-                JsonNode nameNode = venueNode.get("name");
-                if (VenueValidatorFromDaoResponse.isValidNode(nameNode)) {
-                    venueDto.setName(venueNode.get("name").textValue());
-                }
+                    if (venueNode.get("name") != null) {
+                        venueDto.setName(venueNode.get("name").textValue());
+                    }
 
-                JsonNode phoneNode = venueNode.get("contact").get("phone");
-                if (VenueValidatorFromDaoResponse.isValidNode(phoneNode)) {
-                    venueDto.setPhone(phoneNode.textValue());
-                }
+                    if (venueNode.get("contact") != null && venueNode.get("contact").get("phone") != null) {
+                        venueDto.setPhone(venueNode.get("contact").get("phone").textValue());
+                    }
 
-                JsonNode addressNode = venueNode.get("location").get("address");
-                if (VenueValidatorFromDaoResponse.isValidNode(addressNode)) {
-                    venueDto.setAddress(addressNode.textValue());
+                    if (venueNode.get("location") != null && venueNode.get("location").get("address") != null) {
+                        venueDto.setAddress(venueNode.get("location").get("address").textValue());
+                    }
+
+                    searchResponse.getVenues().add(venueDto);
                 }
-                searchResponse.getVenues().add(venueDto);
-            }
-        });
+            });
+        }
 
         return searchResponse;
     }

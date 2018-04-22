@@ -81,7 +81,7 @@ public class SearchControllerIntegrationTest {
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("search_controller_integration_response.json");
+        InputStream is = classLoader.getResourceAsStream("testData/search_controller_integration_response.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         jsonExpected = jsonNode.toString();
     }

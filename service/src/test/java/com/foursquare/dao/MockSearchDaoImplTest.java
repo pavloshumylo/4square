@@ -18,7 +18,7 @@ public class MockSearchDaoImplTest {
     @Before
     public void init() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("mock_search_dao_response.json");
+        InputStream is = classLoader.getResourceAsStream("testData/mock_search_dao_response.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         jsonExpected = jsonNode.toString();
         searchDao = new MockSearchDaoImpl();

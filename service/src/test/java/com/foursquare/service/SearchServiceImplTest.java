@@ -69,7 +69,7 @@ public class SearchServiceImplTest {
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("search_service_response_normal.json");
+        InputStream is = classLoader.getResourceAsStream("testData/search_service_response_normal.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         String jsonFromDao = jsonNode.toString();
 
@@ -97,7 +97,7 @@ public class SearchServiceImplTest {
     @Test
     public void testSearchService_ShouldReturnEmptySearchResponseDto() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("search_service_response_with_empty_venues.json");
+        InputStream is = classLoader.getResourceAsStream("testData/search_service_response_with_empty_venues.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         String jsonFromDao = jsonNode.toString();
 
@@ -134,7 +134,7 @@ public class SearchServiceImplTest {
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("search_service_response_first_venue_without_id.json");
+        InputStream is = classLoader.getResourceAsStream("testData/search_service_response_first_venue_without_id.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         String jsonFromDao = jsonNode.toString();
 
@@ -155,7 +155,7 @@ public class SearchServiceImplTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.
-                getResourceAsStream("search_service_response_first_venue_without_name_phone_address.json");
+                getResourceAsStream("testData/search_service_response_first_venue_without_name_phone_address.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         String jsonFromDao = jsonNode.toString();
 
@@ -175,7 +175,7 @@ public class SearchServiceImplTest {
         searchResponseDtoExpected.getVenues().add(venueDtoExpected);
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("search_service_response_missing_name_address.json");
+        InputStream is = classLoader.getResourceAsStream("testData/search_service_response_missing_name_address.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
         String jsonFromDao = jsonNode.toString();
 

@@ -32,7 +32,7 @@ public class ResponseErrorHandlerImplTest {
     @Before
     public void init() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("response_error_handler_with_400_status.json");
+        InputStream is = classLoader.getResourceAsStream("testData/response_error_handler_with_400_status.json");
         jsonFromDao = new ObjectMapper().readValue(is, JsonNode.class);
         responseErrorHandler = new ResponseErrorHandlerImpl();
     }
