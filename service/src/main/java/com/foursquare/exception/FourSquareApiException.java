@@ -3,21 +3,13 @@ package com.foursquare.exception;
 public class FourSquareApiException extends RuntimeException {
 
     private int code;
-    private String message;
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
+    public FourSquareApiException(int code, String message) {
+        super(message);
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public int getCode() {
+        return code;
     }
 }

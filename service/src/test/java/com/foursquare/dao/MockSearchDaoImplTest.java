@@ -1,7 +1,7 @@
 package com.foursquare.dao;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foursquare.dao.dao.impl.MockSearchDaoImpl;
+import com.foursquare.dao.impl.MockSearchDaoImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,9 +18,9 @@ public class MockSearchDaoImplTest {
     @Before
     public void init() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("expectedMockDaoResponse.json");
+        InputStream is = classLoader.getResourceAsStream("mock_search_dao_response.json");
         JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonExpected = jsonNode.get("testJsons").get(0).toString();
+        jsonExpected = jsonNode.toString();
         searchDao = new MockSearchDaoImpl();
     }
 

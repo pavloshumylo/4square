@@ -19,11 +19,9 @@ public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
             throw  new RuntimeException(e);
         }
 
-        if(jsonNode.get("meta").get("code").intValue() != 200) {
-            FourSquareApiException apiException = new FourSquareApiException();
-            apiException.setCode(jsonNode.get("meta").get("code").intValue());
-            apiException.setMessage(jsonNode.get("meta").get("errorDetail").textValue());
-            throw apiException;
-        }
+        FourSquareApiException apiException = new FourSquareApiException(
+                jsonNode.get("meta").get("code").intValue(),
+                jsonNode.get("meta").get("errorDetail").textValue());
+        throw apiException;
     }
 }

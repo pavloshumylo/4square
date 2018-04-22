@@ -1,4 +1,4 @@
-package com.foursquare.dao.dao.impl;
+package com.foursquare.dao.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

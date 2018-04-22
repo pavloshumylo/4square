@@ -16,9 +16,7 @@ public class ErrorResponseExceptionHandlerTest {
     @Before
     public void init() {
         errorResponseExceptionHandler = new ErrorResponseExceptionHandler();
-        fourSquareApiException = new FourSquareApiException();
-        fourSquareApiException.setMessage("TestMessage");
-        fourSquareApiException.setCode(200);
+        fourSquareApiException = new FourSquareApiException(200, "TestMessage");
         errorResponseDtoExpected = new ErrorResponseDto(200, "TestMessage");
     }
 

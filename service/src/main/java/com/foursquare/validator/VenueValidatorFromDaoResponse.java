@@ -2,7 +2,7 @@ package com.foursquare.validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class JsonResponseValidator {
+public class VenueValidatorFromDaoResponse {
 
     public static boolean isValidVenue(JsonNode venueToValidate) {
         if (venueToValidate.get("id") == null) {
@@ -16,9 +16,6 @@ public class JsonResponseValidator {
     }
 
     public static boolean isValidNode(JsonNode nodeToValidate) {
-        if (nodeToValidate == null) {
-            return false;
-        }
-        return  true;
+        return nodeToValidate != null;
     }
 }

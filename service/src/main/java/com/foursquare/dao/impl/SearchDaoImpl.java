@@ -1,4 +1,4 @@
-package com.foursquare.dao.dao.impl;
+package com.foursquare.dao.impl;
 
 import com.foursquare.dao.SearchDao;
 import com.foursquare.config.FourSquareProperties;

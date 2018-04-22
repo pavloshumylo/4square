@@ -1,7 +1,7 @@
 package com.foursquare.config;
 
 import com.foursquare.dao.SearchDao;
-import com.foursquare.dao.dao.impl.SearchDaoImpl;
+import com.foursquare.dao.impl.SearchDaoImpl;
 import com.foursquare.handler.ResponseErrorHandlerImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
