@@ -10,6 +10,8 @@ import com.foursquare.validator.VenueValidatorFromDaoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
@@ -30,29 +32,36 @@ public class SearchServiceImpl implements SearchService {
             throw  new RuntimeException(e);
         }
 
-        if (jsonNode.get("response") != null && jsonNode.get("response").get("venues") != null) {
-            JsonNode venuesNode = jsonNode.get("response").get("venues");
-            venuesNode.forEach((venueNode) -> {
-                if (VenueValidatorFromDaoResponse.isValidVenue(venueNode)) {
-                    VenueDto venueDto = new VenueDto();
+        Optional<JsonNode> optionalJsonNode = Optional.ofNullable(jsonNode);
+        Optional<JsonNode> venuesNode = null;
+        venuesNode = optionalJsonNode.map(venueNode -> venueNode.get("response")).
+                    map(responseNode -> responseNode.get("venues"));
+
+
+        venuesNode.ifPresent(n -> n.forEach((venueNode) -> {
+            if (VenueValidatorFromDaoResponse.isValidVenue(venueNode)) {
+                Optional<JsonNode> optionalVenueNode = Optional.ofNullable(venueNode);
+                VenueDto venueDto = new VenueDto();
+
+                if(venueNode.get("id") != null) {
                     venueDto.setId(venueNode.get("id").textValue());
-
-                    if (venueNode.get("name") != null) {
-                        venueDto.setName(venueNode.get("name").textValue());
-                    }
-
-                    if (venueNode.get("contact") != null && venueNode.get("contact").get("phone") != null) {
-                        venueDto.setPhone(venueNode.get("contact").get("phone").textValue());
-                    }
-
-                    if (venueNode.get("location") != null && venueNode.get("location").get("address") != null) {
-                        venueDto.setAddress(venueNode.get("location").get("address").textValue());
-                    }
-
-                    searchResponse.getVenues().add(venueDto);
                 }
-            });
-        }
+
+                if(venueNode.get("name") != null) {
+                    venueDto.setName(venueNode.get("name").textValue());
+                }
+
+                optionalVenueNode.map(venueOptionalNode -> venueOptionalNode.get("contact")).
+                        map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode ->
+                        venueDto.setPhone(phoneNode.textValue()));
+
+                optionalVenueNode.map(venueOptionalNode -> venueOptionalNode.get("location")).
+                        map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
+                        venueDto.setAddress(addresssNode.textValue()));
+
+                searchResponse.getVenues().add(venueDto);
+            }
+        }));
 
         return searchResponse;
     }
