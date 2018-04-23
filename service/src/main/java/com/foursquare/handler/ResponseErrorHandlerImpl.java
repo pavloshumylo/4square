@@ -7,6 +7,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
 
@@ -19,28 +20,11 @@ public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
             throw  new RuntimeException(e);
         }
 
-        boolean codeNodeIsNull = true;
-        boolean errorDetailNodeIsNull = true;
-        if (jsonNode.get("meta") != null) {
-            if (jsonNode.get("meta").get("code") != null) {
-                codeNodeIsNull = false;
-            }
-            if (jsonNode.get("meta").get("errorDetail") != null) {
-                errorDetailNodeIsNull = false;
-            }
-        }
+        int code = Optional.ofNullable(jsonNode.get("meta")).map(metaNode -> metaNode.get("code"))
+                .map(codeNode -> codeNode.intValue()).orElse(500);
+        String message = Optional.ofNullable(jsonNode.get("meta")).map(metaNode -> metaNode.get("errorDetail"))
+                .map(errorDetailNode -> errorDetailNode.textValue()).orElse("Unknown Error");
 
-        FourSquareApiException apiException = null;
-        if (codeNodeIsNull && errorDetailNodeIsNull) {
-            apiException = new FourSquareApiException();
-        } else if (codeNodeIsNull) {
-            apiException = new FourSquareApiException(jsonNode.get("meta").get("errorDetail").textValue());
-        } else if (errorDetailNodeIsNull) {
-            apiException = new FourSquareApiException(jsonNode.get("meta").get("code").intValue());
-        } else {
-            apiException = new FourSquareApiException(jsonNode.get("meta").get("code").intValue(),
-                    jsonNode.get("meta").get("errorDetail").textValue());
-        }
-        throw apiException;
+        throw new FourSquareApiException(code, message);
     }
 }

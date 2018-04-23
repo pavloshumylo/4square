@@ -1,5 +1,6 @@
 package com.foursquare.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.exception.FourSquareApiException;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -38,13 +40,15 @@ public class ResponseErrorHandlerImplTest {
     }
 
     @Test
-    public void testHandleError_ShouldThrowFourSquareApiException() {
+    public void testHandleError_ShouldThrowFourSquareApiException() throws JsonProcessingException {
         try {
             responseErrorHandler.
                     handleError(new MockClientHttpResponse(objectMapper.writeValueAsBytes(jsonFromDao), BAD_REQUEST));
             Assert.fail();
-        } catch (Exception ex) {
+        } catch (FourSquareApiException ex) {
             assertTrue(ex instanceof FourSquareApiException);
+            assertEquals(400, ex.getCode());
+            assertEquals("Couldn't geocode param near: lvive", ex.getMessage());
         }
     }
 }
