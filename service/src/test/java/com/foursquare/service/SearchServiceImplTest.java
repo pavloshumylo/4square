@@ -1,13 +1,11 @@
 package com.foursquare.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
 import com.foursquare.service.impl.SearchServiceImpl;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -70,8 +67,7 @@ public class SearchServiceImplTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/search_service_response_normal.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        String jsonFromDao = jsonNode.toString();
+        JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
@@ -98,8 +94,7 @@ public class SearchServiceImplTest {
     public void testSearchService_ShouldReturnEmptySearchResponseDto() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/search_service_response_with_empty_venues.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        String jsonFromDao = jsonNode.toString();
+        JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
@@ -135,8 +130,7 @@ public class SearchServiceImplTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/search_service_response_first_venue_without_id.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        String jsonFromDao = jsonNode.toString();
+        JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
@@ -156,8 +150,7 @@ public class SearchServiceImplTest {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.
                 getResourceAsStream("testData/search_service_response_first_venue_without_name_phone_address.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        String jsonFromDao = jsonNode.toString();
+        JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
@@ -176,34 +169,11 @@ public class SearchServiceImplTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/search_service_response_missing_name_address.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        String jsonFromDao = jsonNode.toString();
+        JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
         when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(jsonFromDao);
         SearchResponseDto searchResponseDtoActual = searchService.search("testCity", "testPlace", "testLimit");
 
         assertEquals(searchResponseDtoExpected, searchResponseDtoActual);
-    }
-
-    @Test
-    public void testSearchService_ShouldThrowNullPointerException() {
-        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn(null);
-        try {
-            searchService.search("testCity", "testPlace", "testLimit");
-            Assert.fail();
-        } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof NullPointerException);
-        }
-    }
-
-    @Test
-    public void testSearchService_ShouldThrowJsonParseException() {
-        when(searchDao.search(any(String.class), any(String.class), any(String.class))).thenReturn("badjson");
-        try {
-            searchService.search("testCity", "testPlace", "testLimit");
-            Assert.fail();
-        } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof JsonParseException);
-        }
     }
 }

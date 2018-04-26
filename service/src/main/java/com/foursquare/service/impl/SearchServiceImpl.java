@@ -1,7 +1,6 @@
 package com.foursquare.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
@@ -22,24 +21,14 @@ public class SearchServiceImpl implements SearchService {
         return searchResponse;
     }
 
-    private SearchResponseDto mapFromJson(String json) {
+    private SearchResponseDto mapFromJson(JsonNode jsonNode) {
         SearchResponseDto searchResponse = new SearchResponseDto();
 
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = new ObjectMapper().readTree(json);
-        } catch (Exception e) {
-            throw  new RuntimeException(e);
-        }
-
-        Optional<JsonNode> optionalJsonNode = Optional.ofNullable(jsonNode);
-        Optional<JsonNode> venuesNode = optionalJsonNode.map(venueNode -> venueNode.get("response")).
+        Optional<JsonNode> venuesNode = Optional.ofNullable(jsonNode).map(venueNode -> venueNode.get("response")).
                     map(responseNode -> responseNode.get("venues"));
-
 
         venuesNode.ifPresent(n -> n.forEach((venueNode) -> {
             if (DaoResponseVenueValidatior.isValidVenue(venueNode)) {
-                Optional<JsonNode> optionalVenueNode = Optional.ofNullable(venueNode);
                 VenueDto venueDto = new VenueDto();
 
                 if(venueNode.get("id") != null) {
@@ -50,11 +39,11 @@ public class SearchServiceImpl implements SearchService {
                     venueDto.setName(venueNode.get("name").textValue());
                 }
 
-                optionalVenueNode.map(venueOptionalNode -> venueOptionalNode.get("contact")).
+                Optional.ofNullable(venueNode).map(venueOptionalNode -> venueOptionalNode.get("contact")).
                         map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode ->
                         venueDto.setPhone(phoneNode.textValue()));
 
-                optionalVenueNode.map(venueOptionalNode -> venueOptionalNode.get("location")).
+                Optional.ofNullable(venueNode).map(venueOptionalNode -> venueOptionalNode.get("location")).
                         map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
                         venueDto.setAddress(addresssNode.textValue()));
 

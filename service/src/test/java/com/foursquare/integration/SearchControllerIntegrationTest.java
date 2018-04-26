@@ -1,6 +1,5 @@
 package com.foursquare.integration;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.config.FourSquareProperties;
 import com.foursquare.controller.SearchController;
@@ -8,6 +7,7 @@ import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,8 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -39,8 +41,6 @@ public class SearchControllerIntegrationTest {
     private FourSquareProperties fourSquareProperties;
 
     private MockMvc mockMvc;
-    private SearchResponseDto searchResponseDtoExpected;
-    private String jsonExpected;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
@@ -48,10 +48,12 @@ public class SearchControllerIntegrationTest {
     @Before
     public void init() throws IOException {
         fourSquareProperties.setApiHost("http://localhost:"+wireMockRule.port()+"/");
-
         mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
-        searchResponseDtoExpected = new SearchResponseDto();
+    }
 
+    @Test
+    public void testController_ShouldReturnSearchResponseDto() throws Exception {
+        SearchResponseDto searchResponseDtoExpected = new SearchResponseDto();
         VenueDto venueDtoExpected = new VenueDto();
         venueDtoExpected.setId("535a021d498ed71c77ed20e7");
         venueDtoExpected.setName("Нова пошта (відділення №14)");
@@ -82,12 +84,8 @@ public class SearchControllerIntegrationTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/search_controller_integration_response.json");
-        JsonNode jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
-        jsonExpected = jsonNode.toString();
-    }
+        String jsonExpected = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
-    @Test
-    public void testController_ShouldReturnSearchResponseDto() throws Exception {
         stubFor(WireMock.get(urlMatching("/v2/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(200)

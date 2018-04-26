@@ -1,6 +1,8 @@
 package com.foursquare.dao;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public interface SearchDao {
 
-     String search(String city, String query, String limit);
+     JsonNode search(String city, String query, String limit);
 }
