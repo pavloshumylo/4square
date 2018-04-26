@@ -6,7 +6,7 @@ import com.foursquare.dao.SearchDao;
 import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
 import com.foursquare.service.SearchService;
-import com.foursquare.validator.VenueValidatorFromDaoResponse;
+import com.foursquare.validator.DaoResponseVenueValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +33,12 @@ public class SearchServiceImpl implements SearchService {
         }
 
         Optional<JsonNode> optionalJsonNode = Optional.ofNullable(jsonNode);
-        Optional<JsonNode> venuesNode = null;
-        venuesNode = optionalJsonNode.map(venueNode -> venueNode.get("response")).
+        Optional<JsonNode> venuesNode = optionalJsonNode.map(venueNode -> venueNode.get("response")).
                     map(responseNode -> responseNode.get("venues"));
 
 
         venuesNode.ifPresent(n -> n.forEach((venueNode) -> {
-            if (VenueValidatorFromDaoResponse.isValidVenue(venueNode)) {
+            if (DaoResponseVenueValidatior.isValidVenue(venueNode)) {
                 Optional<JsonNode> optionalVenueNode = Optional.ofNullable(venueNode);
                 VenueDto venueDto = new VenueDto();
 
