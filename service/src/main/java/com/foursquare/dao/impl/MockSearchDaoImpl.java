@@ -13,16 +13,14 @@ public class MockSearchDaoImpl implements SearchDao {
 
     private static final Log log = LogFactory.getLog(MockSearchDaoImpl.class);
 
-    public String search(String city, String place, String limit) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("mockDaoResponse.json");
-        JsonNode jsonNode = null;
+    public JsonNode search(String city, String place, String limit) {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("mockDaoResponse.json");
+
         try {
-            jsonNode = new ObjectMapper().readValue(is, JsonNode.class);
+            return new ObjectMapper().readTree(is);
         } catch (IOException ex) {
             log.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
-        return jsonNode.toString();
     }
 }

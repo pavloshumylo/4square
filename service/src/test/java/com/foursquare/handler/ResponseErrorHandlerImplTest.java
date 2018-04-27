@@ -1,11 +1,9 @@
 package com.foursquare.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.exception.FourSquareApiException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,23 +25,16 @@ public class ResponseErrorHandlerImplTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private ResponseErrorHandlerImpl responseErrorHandler;
-    private JsonNode jsonFromDao;
-
-
-    @Before
-    public void init() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("testData/response_error_handler_with_400_status.json");
-        jsonFromDao = new ObjectMapper().readValue(is, JsonNode.class);
-        responseErrorHandler = new ResponseErrorHandlerImpl();
-    }
-
     @Test
-    public void testHandleError_ShouldThrowFourSquareApiException() throws JsonProcessingException {
+    public void testHandleError_ShouldThrowFourSquareApiException() throws IOException {
         try {
-            responseErrorHandler.
-                    handleError(new MockClientHttpResponse(objectMapper.writeValueAsBytes(jsonFromDao), BAD_REQUEST));
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream is = classLoader.getResourceAsStream("testData/response_error_handler_with_400_status.json");
+            JsonNode jsonFromDao = new ObjectMapper().readTree(is);
+
+            new ResponseErrorHandlerImpl().handleError(new MockClientHttpResponse(
+                    objectMapper.writeValueAsBytes(jsonFromDao), BAD_REQUEST));
+
             Assert.fail();
         } catch (FourSquareApiException ex) {
             assertTrue(ex instanceof FourSquareApiException);
