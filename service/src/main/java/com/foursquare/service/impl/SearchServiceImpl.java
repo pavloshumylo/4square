@@ -6,8 +6,6 @@ import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.dto.VenueDto;
 import com.foursquare.service.SearchService;
 import com.foursquare.validator.DaoResponseVenueValidatior;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import java.util.Optional;
 
 @Service
 public class SearchServiceImpl implements SearchService {
-
-    private static final Log log = LogFactory.getLog(SearchServiceImpl.class);
 
     @Autowired
     private SearchDao search;

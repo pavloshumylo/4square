@@ -13,7 +13,7 @@
         </filter>
         <file>logs/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/error_rollover/error_rollback/error_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/error_rollover/error_%d{yyyy-MM-dd}.log</fileNamePattern>
             <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -24,7 +24,7 @@
     <appender name="SAVE-TO-FILE-ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/foursquare.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/foursquare_rollover/foursquare_rollback/foursquare_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/foursquare_rollover/foursquare_%d{yyyy-MM-dd}.log</fileNamePattern>
             <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

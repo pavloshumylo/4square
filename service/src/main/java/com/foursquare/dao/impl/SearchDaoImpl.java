@@ -43,6 +43,7 @@ public class SearchDaoImpl implements SearchDao {
         try {
             return new ObjectMapper().readTree(response.getBody().toString());
         } catch (IOException ex) {
+            log.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
     }

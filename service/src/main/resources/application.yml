@@ -5,4 +5,4 @@ foursquare:
   apiVersion: 20180403
 logging:
   level:
-    root: info
+    root: ${LOG_LVL:info}
