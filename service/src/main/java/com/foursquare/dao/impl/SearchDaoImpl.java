@@ -40,13 +40,10 @@ public class SearchDaoImpl implements SearchDao {
                     fourSquareProperties.getApiClientSecret(),
                     fourSquareProperties.getApiVersion());
 
-        JsonNode jsonNode = null;
         try {
-            jsonNode = new ObjectMapper().readTree(response.getBody().toString());
+            return new ObjectMapper().readTree(response.getBody().toString());
         } catch (IOException ex) {
-            log.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
-        return jsonNode;
     }
 }

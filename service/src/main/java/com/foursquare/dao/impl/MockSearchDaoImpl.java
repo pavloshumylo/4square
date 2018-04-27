@@ -15,13 +15,11 @@ public class MockSearchDaoImpl implements SearchDao {
 
     public JsonNode search(String city, String place, String limit) {
         InputStream is = getClass().getClassLoader().getResourceAsStream("mockDaoResponse.json");
-        JsonNode jsonNode = null;
+
         try {
-            jsonNode = new ObjectMapper().readTree(is);
+            return new ObjectMapper().readTree(is);
         } catch (IOException ex) {
-            log.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
-        return jsonNode;
     }
 }
