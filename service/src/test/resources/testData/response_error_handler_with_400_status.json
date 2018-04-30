@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "code": 400,
+    "errorType": "failed_geocode",
+    "errorDetail": "Couldn't geocode param near: lvive",
+    "requestId": "5ada49a3351e3d516683af6b"
+  },
+  "response": {}
+}

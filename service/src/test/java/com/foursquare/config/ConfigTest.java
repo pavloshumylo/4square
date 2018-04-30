@@ -1,7 +1,7 @@
 package com.foursquare.config;
 
 import com.foursquare.dao.SearchDao;
-import com.foursquare.dao.dao.impl.SearchDaoImpl;
+import com.foursquare.dao.impl.SearchDaoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

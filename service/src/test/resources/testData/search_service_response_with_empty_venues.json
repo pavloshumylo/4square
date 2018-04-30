@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5ad88e22f594df0e54fe09c1"
+  },
+  "response": {
+    "venues": [],
+    "geocode": {
+      "what": "",
+      "where": "ternopil",
+      "feature": {
+        "cc": "UA",
+        "name": "Ternopil",
+        "displayName": "Ternopil, Ukraine",
+        "matchedName": "Ternopil, Ukraine",
+        "highlightedName": "<b>Ternopil</b>, Ukraine",
+        "woeType": 7,
+        "slug": "ternopil-ukraine",
+        "id": "geonameid:691650",
+        "longId": "72057594038619586",
+        "geometry": {
+          "center": {
+            "lat": 49.55589,
+            "lng": 25.60556
+          },
+          "bounds": {
+            "ne": {
+              "lat": 49.593581999999856,
+              "lng": 25.654636999999923
+            },
+            "sw": {
+              "lat": 49.504852499999856,
+              "lng": 25.543103999999857
+            }
+          }
+        }
+      },
+      "parents": []
+    }
+  }
+}

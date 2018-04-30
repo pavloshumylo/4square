@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5ac5eb54351e3d4df8cebb05"
+  },
+  "response": {
+    "venues": [
+      {
+        "id": "535a021d498ed71c77ed20e7",
+        "contact": {
+          "phone": "+380322901911",
+          "formattedPhone": "+380 322 901 911",
+          "twitter": "_novaposhta_"
+        },
+        "location": {
+          "crossStreet": "вул. Петра Дорошенка",
+          "lat": 49.83832099953952,
+          "lng": 24.023289687789234
+        }
+      }
+    ]
+  }
+}
