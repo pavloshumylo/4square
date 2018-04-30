@@ -18,31 +18,31 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 public class LoggingAspectTest {
 
-    @MockBean
-    private LoggingAspect loggingAspect;
-
-    private static class NestedTest {
+    private static class LoggingAspectNested {
 
         @LoggingInvocation(logLevel = LoggingLevels.INFO)
-        public void invocationOfAspectTest() {
+        public void invocationOfAspect() {
         }
     }
 
     @SpringBootApplication
-    public static class TestConf {
+    public static class ConfigNested {
 
         @Bean
-        public LoggingAspectTest.NestedTest nestedTest() {
-            return new LoggingAspectTest.NestedTest();
+        public LoggingAspectNested loggingAspectNested() {
+            return new LoggingAspectNested();
         }
     }
 
+    @MockBean
+    private LoggingAspect loggingAspect;
+
     @Autowired
-    private NestedTest nestedTest;
+    private LoggingAspectNested loggingAspectNested;
 
     @Test
     public void testLoggingAspect() {
-        nestedTest.invocationOfAspectTest();
+        loggingAspectNested.invocationOfAspect();
         verify(loggingAspect, times(1)).methodInvocationLogging(any(JoinPoint.class),
                 any(LoggingInvocation.class));
     }

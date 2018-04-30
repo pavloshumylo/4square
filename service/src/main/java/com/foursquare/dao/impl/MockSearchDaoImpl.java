@@ -5,15 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.logging.LoggingInvocation;
 import com.foursquare.logging.LoggingLevels;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class MockSearchDaoImpl implements SearchDao {
 
-    private static final Log log = LogFactory.getLog(MockSearchDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MockSearchDaoImpl.class);
 
     @LoggingInvocation(logLevel = LoggingLevels.INFO)
     public JsonNode search(String city, String place, String limit) {
@@ -22,7 +22,7 @@ public class MockSearchDaoImpl implements SearchDao {
         try {
             return new ObjectMapper().readTree(is);
         } catch (IOException ex) {
-            log.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
+            LOG.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
