@@ -11,6 +11,7 @@ public class LoggingAspect {
 
     @Before(value = "@annotation(LoggingInvocation)", argNames = "LoggingInvocation")
     public void methodInvocationLogging(JoinPoint joinPoint, LoggingInvocation loggingInvocation) {
-        loggingInvocation.logLevel().loggingExecution(joinPoint);
+        loggingInvocation.logLevel().executeLogging(joinPoint.getTarget().getClass().getName(),
+                joinPoint.getSignature().getName(), joinPoint.getArgs());
     }
 }
