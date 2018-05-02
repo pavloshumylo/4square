@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface LoggingInvocation {
 
-    LoggingLevels logLevel() default LoggingLevels.ERROR;
+    LoggingLevel logLevel() default LoggingLevel.ERROR;
 }

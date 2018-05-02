@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.config.FourSquareProperties;
 import com.foursquare.logging.LoggingInvocation;
-import com.foursquare.logging.LoggingLevels;
+import com.foursquare.logging.LoggingLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class SearchDaoImpl implements SearchDao {
 
     private static final String url = "{fourSquareApiHost}v2/venues/search?near={city}&query={query}&limit={limit}&client_id={client_id}&client_secret={client_secret}&v={version}";
 
-    @LoggingInvocation(logLevel = LoggingLevels.INFO)
+    @LoggingInvocation(logLevel = LoggingLevel.INFO)
     public JsonNode search(String city, String query, String limit) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);

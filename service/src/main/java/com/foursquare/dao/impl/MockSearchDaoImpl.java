@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SearchDao;
 import com.foursquare.logging.LoggingInvocation;
-import com.foursquare.logging.LoggingLevels;
+import com.foursquare.logging.LoggingLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class MockSearchDaoImpl implements SearchDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(MockSearchDaoImpl.class);
 
-    @LoggingInvocation(logLevel = LoggingLevels.INFO)
+    @LoggingInvocation(logLevel = LoggingLevel.INFO)
     public JsonNode search(String city, String place, String limit) {
         InputStream is = getClass().getClassLoader().getResourceAsStream("mockDaoResponse.json");
 

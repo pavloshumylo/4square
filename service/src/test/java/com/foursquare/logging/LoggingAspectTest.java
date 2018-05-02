@@ -20,7 +20,7 @@ public class LoggingAspectTest {
 
     private static class LoggingAspectNested {
 
-        @LoggingInvocation(logLevel = LoggingLevels.INFO)
+        @LoggingInvocation(logLevel = LoggingLevel.INFO)
         public void invocationOfAspect() {
         }
     }
