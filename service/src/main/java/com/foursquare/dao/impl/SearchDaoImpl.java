@@ -3,7 +3,8 @@ package com.foursquare.dao.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.config.FourSquareProperties;
-import com.foursquare.dao.SearchDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -11,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 
 public class SearchDaoImpl implements SearchDao {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SearchDaoImpl.class);
 
     @Autowired
     private FourSquareProperties fourSquareProperties;
@@ -39,6 +42,7 @@ public class SearchDaoImpl implements SearchDao {
         try {
             return new ObjectMapper().readTree(response.getBody().toString());
         } catch (IOException ex) {
+            LOG.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
