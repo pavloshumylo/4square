@@ -27,11 +27,12 @@ public class LoggingAspectTest {
     private Signature signature;
     @Mock
     private Object object;
+    @Mock
+    private LoggingLevel level;
 
     @Test
     public void testMethodInvocationLogging_ShouldInvokedOneTime() {
         MockitoAnnotations.initMocks(this);
-        LoggingLevel level = spy(LoggingLevel.INFO);
 
         when(loggingInvocation.logLevel()).thenReturn(level);
         doNothing().when(level).executeLogging(anyString(), anyString(), any(Object[].class));

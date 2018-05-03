@@ -17,7 +17,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: junit_version
     testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
-    testCompile group: 'org.mockito', name: 'mockito-core', version: mockito_version
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: powermock_version
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: powermock_version
     compile project(':common')
 
 }
