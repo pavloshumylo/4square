@@ -3,20 +3,12 @@ package com.foursquare.logging;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class LoggingAspectTest {
-
-    @Autowired
-    private LoggingAspect loggingAspect;
 
     @Mock
     private JoinPoint joinPoint;
@@ -29,6 +21,8 @@ public class LoggingAspectTest {
 
     @Test
     public void testMethodInvocationLogging_ShouldInvokedOneTime() {
+        MockitoAnnotations.initMocks(this);
+
         when(loggingInvocation.logLevel()).thenReturn(level);
         doNothing().when(level).executeLogging(anyString(), anyString(), any(Object[].class));
         when(joinPoint.getTarget()).thenReturn(new LoggingAspectTest());
@@ -36,7 +30,7 @@ public class LoggingAspectTest {
         when(signature.getName()).thenReturn("methodName");
         when(joinPoint.getArgs()).thenReturn(new Object[] {"arg"});
 
-        loggingAspect.methodInvocationLogging(joinPoint, loggingInvocation);
+        new LoggingAspect().methodInvocationLogging(joinPoint, loggingInvocation);
         verify(level).executeLogging("com.foursquare.logging.LoggingAspectTest",
                 "methodName", new Object[] {"arg"});
     }
