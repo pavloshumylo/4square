@@ -13,9 +13,12 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     compile group: 'com.google.guava', name: 'guava', version: guava_version
     compile group: 'org.apache.commons', name: 'commons-io', version: apache_commons_version
+    compile group: 'org.springframework', name: 'spring-aspects', version: aspect_version
     testCompile group: 'junit', name: 'junit', version: junit_version
     testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: powermock_version
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: powermock_version
     compile project(':common')
 
 }

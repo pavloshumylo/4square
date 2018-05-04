@@ -4,21 +4,19 @@ import com.foursquare.dao.SearchDao;
 import com.foursquare.dao.impl.SearchDaoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class ConfigTest {
 
-    @Autowired
+    @InjectMocks
     private Config config;
 
     @Test
-    public void testConfig_ShouldReturnMockSearchDaoImpl() {
+    public void testConfig_ShouldReturnSearchDaoImpl() {
         SearchDao searchDaoReturned = config.searchDao();
         assertTrue(searchDaoReturned instanceof SearchDaoImpl);
     }
