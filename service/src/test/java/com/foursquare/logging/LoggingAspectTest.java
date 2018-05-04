@@ -25,20 +25,19 @@ public class LoggingAspectTest {
     @Mock
     private Signature signature;
     @Mock
-    private Object object;
-    @Mock
     private LoggingLevel level;
 
     @Test
     public void testMethodInvocationLogging_ShouldInvokedOneTime() {
         when(loggingInvocation.logLevel()).thenReturn(level);
         doNothing().when(level).executeLogging(anyString(), anyString(), any(Object[].class));
-        when(joinPoint.getTarget()).thenReturn(object);
+        when(joinPoint.getTarget()).thenReturn(new LoggingAspectTest());
         when(joinPoint.getSignature()).thenReturn(signature);
-        when(signature.getName()).thenReturn("Name");
-        when(joinPoint.getArgs()).thenReturn(new Object[4]);
+        when(signature.getName()).thenReturn("methodName");
+        when(joinPoint.getArgs()).thenReturn(new Object[] {"arg"});
 
         loggingAspect.methodInvocationLogging(joinPoint, loggingInvocation);
-        verify(level, times(1)).executeLogging(anyString(), anyString(), any(Object[].class));
+        verify(level).executeLogging("com.foursquare.logging.LoggingAspectTest",
+                "methodName", new Object[] {"arg"});
     }
 }
