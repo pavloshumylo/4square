@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.exception.FourSquareApiException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.http.client.MockClientHttpResponse;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,12 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class ResponseErrorHandlerImplTest {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     public void testHandleError_ShouldThrowFourSquareApiException() throws IOException {
@@ -33,7 +24,7 @@ public class ResponseErrorHandlerImplTest {
             JsonNode jsonFromDao = new ObjectMapper().readTree(is);
 
             new ResponseErrorHandlerImpl().handleError(new MockClientHttpResponse(
-                    objectMapper.writeValueAsBytes(jsonFromDao), BAD_REQUEST));
+                    new ObjectMapper().writeValueAsBytes(jsonFromDao), BAD_REQUEST));
 
             Assert.fail();
         } catch (FourSquareApiException ex) {
