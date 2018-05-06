@@ -3,6 +3,21 @@ foursquare:
   apiClientId: E4WJZ5EZL2FP3LOGJVCWMMQDJOYB02JKJIMZ20DRZHYR5ZOT
   apiClientSecret: J0RZKSNJZH1ZHEGS2R0YJ5EDT4DS4CHDNMCBHIETS53CJS4Y
   apiVersion: 20180403
+
 logging:
   level:
     root: ${LOG_LVL:info}
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/4square?useSSL=false
+    username: hbstudent
+    password: hbstudent
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
