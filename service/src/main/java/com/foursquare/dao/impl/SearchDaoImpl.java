@@ -3,6 +3,7 @@ package com.foursquare.dao.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.config.FourSquareProperties;
+import com.foursquare.dao.SearchDao;
 import com.foursquare.logging.LoggingInvocation;
 import com.foursquare.logging.LoggingLevel;
 import org.slf4j.Logger;
