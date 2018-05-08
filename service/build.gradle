@@ -14,6 +14,8 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: guava_version
     compile group: 'org.apache.commons', name: 'commons-io', version: apache_commons_version
     compile group: 'org.springframework', name: 'spring-aspects', version: aspect_version
+    compile group: 'mysql', name: 'mysql-connector-java', version: mysql_version
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
     testCompile group: 'junit', name: 'junit', version: junit_version
     testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
