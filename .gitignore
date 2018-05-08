@@ -3,7 +3,9 @@
 classes/
 out/
 build/
+logs/
 client/build
 common/build
 cron/build
 service/build
+service/logs
