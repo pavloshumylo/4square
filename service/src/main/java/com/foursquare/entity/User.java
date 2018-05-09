@@ -9,16 +9,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
     private String name;
-
-    @Column
     private String email;
-
-    @Column
     private String city;
-
-    @Column
     private String password;
 
     public int getId() {
