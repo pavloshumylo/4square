@@ -52,12 +52,18 @@ public class DaoResponseVenueValidatiorTest {
     }
 
     @Test
-    public void testIsValidVenue_venueEmpty_ShouldReturnTrue() throws IOException {
+    public void testIsValidVenue_venueEmpty_ShouldReturnFalse() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/venue_validator_from_dao_response_empty_venue.json");
         JsonNode jsonVenue = new ObjectMapper().readTree(is);
 
         boolean actualValidatorResult = DaoResponseVenueValidatior.isValidVenue(jsonVenue.get("venue"));
+        assertEquals(false, actualValidatorResult);
+    }
+
+    @Test
+    public void testIsValidVenue_venueNull_ShouldReturnFalse() throws IOException {
+        boolean actualValidatorResult = DaoResponseVenueValidatior.isValidVenue(null);
         assertEquals(false, actualValidatorResult);
     }
 }
