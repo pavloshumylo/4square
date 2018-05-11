@@ -21,6 +21,7 @@ dependencies {
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: powermock_version
     testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: powermock_version
+    testCompile group: 'com.h2database', name: 'h2', version: h2_version
     compile project(':common')
 
 }
