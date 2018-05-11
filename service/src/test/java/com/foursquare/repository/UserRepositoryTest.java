@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,11 +49,21 @@ public class UserRepositoryTest {
         entityManager.persist(firstUserExpected);
         entityManager.persist(secondUserExpected);
 
-        User firstUserActual = userRepository.getOne(1);
-        User secondUserActual = userRepository.getOne(2);
+        User firstUserActual = userRepository.getOne(firstUserExpected.getId());
+        User secondUserActual = userRepository.getOne(secondUserExpected.getId());
 
         assertEquals(firstUserExpected, firstUserActual);
         assertEquals(secondUserExpected, secondUserActual);
+    }
+
+    @Test
+    public void testFindAll_ShouldReturnAllUsers() {
+        entityManager.persist(firstUserExpected);
+        entityManager.persist(secondUserExpected);
+
+        List<User> usersExpected = userRepository.findAll();
+
+        assertEquals(usersExpected, Arrays.asList(firstUserExpected, secondUserExpected));
     }
 
     @Test
