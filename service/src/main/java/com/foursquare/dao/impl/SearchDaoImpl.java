@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-
 public class SearchDaoImpl implements SearchDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchDaoImpl.class);
@@ -45,7 +43,7 @@ public class SearchDaoImpl implements SearchDao {
 
         try {
             return new ObjectMapper().readTree(response.getBody().toString());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             LOG.error("Exception thrown: " + ex + ", message: " + ex.getMessage());
             throw new RuntimeException(ex);
         }

@@ -55,8 +55,8 @@ public class SearchDaoImplTest {
         assertEquals(new ObjectMapper().readTree(responseExpected), responseActual);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testSearch_ShouldThrowNullPointerException() {
+    @Test(expected = RuntimeException.class)
+    public void testSearch_ShouldThrowRuntimeException() {
             stubFor(get(urlMatching("/v2/venues/.*"))
                     .willReturn(aResponse()
                             .withStatus(200)

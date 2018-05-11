@@ -33,4 +33,8 @@ public class ResponseErrorHandlerImplTest {
             assertEquals("Couldn't geocode param near: lvive", ex.getMessage());
         }
     }
+
+    @Test(expected = RuntimeException.class)
+    public void testHandleError_ShouldThrowRuntimeException() {
+        new ResponseErrorHandlerImpl().handleError(null);    }
 }
