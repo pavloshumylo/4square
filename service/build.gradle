@@ -17,12 +17,14 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: mysql_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
     compile group: 'org.flywaydb', name: 'flyway-core', version: flyway_version
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: oauth2_version
     testCompile group: 'junit', name: 'junit', version: junit_version
     testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: powermock_version
     testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: powermock_version
     testCompile group: 'com.h2database', name: 'h2', version: h2_version
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: spring_security_version
     compile project(':common')
 
 }
