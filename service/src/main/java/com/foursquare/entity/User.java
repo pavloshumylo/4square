@@ -1,5 +1,7 @@
 package com.foursquare.entity;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 
 @Entity
@@ -52,5 +54,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equal(name, user.name) &&
+                Objects.equal(email, user.email) &&
+                Objects.equal(city, user.city) &&
+                Objects.equal(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, email, city, password);
     }
 }
