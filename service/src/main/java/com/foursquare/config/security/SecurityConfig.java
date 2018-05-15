@@ -1,4 +1,4 @@
-package com.foursquare.config.oauth2;
+package com.foursquare.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
