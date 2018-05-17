@@ -13,7 +13,7 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping(value = "/search")
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'USER')")
     public SearchResponseDto search(@RequestParam(value = "near") String near, @RequestParam(value = "query") String query, @RequestParam(value = "limit") String limit) {
         return searchService.search(near, query, limit);
     }
