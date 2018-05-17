@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class RegistrationController {
 
@@ -16,7 +18,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<Void> registration(@RequestBody User user) {
+    public ResponseEntity<Void> registration(@Valid @RequestBody User user) {
         registrationService.register(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

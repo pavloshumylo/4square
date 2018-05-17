@@ -3,6 +3,7 @@ package com.foursquare.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.entity.User;
 import com.foursquare.service.RegistrationService;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,14 +26,20 @@ public class RegistrationControllerTest {
     @Mock
     private RegistrationService registrationService;
 
-    @Test
-    public void testRegistration_ShouldReturnCreatedResponseEntity() throws Exception {
+    private MockMvc mockMvc;
+
+    @Before
+    public void init() {
         MockitoAnnotations.initMocks(this);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(registrationController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(registrationController).build();
+    }
+
+    @Test
+    public void testRegistration_ShouldReturnOkResponseEntityAndShouldInvokeRegisterMethodOnce() throws Exception {
         doNothing().when(registrationService).register(any(User.class));
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream("testData/registration_controller_user_for_registration.json");
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("testData/registration_controller_user_for_registration.json");
 
         mockMvc.perform(post("/registration")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,5 +47,18 @@ public class RegistrationControllerTest {
                 .andExpect(status().isOk());
 
         verify(registrationService).register(any(User.class));
+    }
+
+    @Test
+    public void testRegistration_ShouldReturnBadRequestResponseEntity() throws Exception {
+        doNothing().when(registrationService).register(any(User.class));
+
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("testData/registration_controller_invalid_user_for_registration.json");
+
+        mockMvc.perform(post("/registration")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().readTree(is).toString()))
+                .andExpect(status().isBadRequest());
     }
 }

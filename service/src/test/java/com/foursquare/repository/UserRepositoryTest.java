@@ -31,6 +31,16 @@ public class UserRepositoryTest {
     public void init() {
         firstUserExpected = new User();
         secondUserExpected = new User();
+
+        firstUserExpected.setName("userName");
+        firstUserExpected.setPassword("somePassword@1");
+        firstUserExpected.setCity("Lviv");
+        firstUserExpected.setEmail("email@exmaple.com");
+
+        secondUserExpected.setName("userName");
+        secondUserExpected.setPassword("somePassword@1");
+        secondUserExpected.setCity("Lviv");
+        secondUserExpected.setEmail("email@exmaple.com");
     }
 
     @Test
