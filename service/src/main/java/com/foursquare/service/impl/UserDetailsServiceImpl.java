@@ -28,6 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private List<SimpleGrantedAuthority> getAuthority() {
-        return Arrays.asList(new SimpleGrantedAuthority("USER"));
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }
