@@ -19,9 +19,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     static final String CLIENT_ID = "foursquare-client";
     static final String CLIENT_SECRET = "foursquare-secret";
     static final String GRANT_TYPE_PASSWORD = "password";
-    static final String AUTHORIZATION_CODE = "authorization_code";
     static final String REFRESH_TOKEN = "refresh_token";
-    static final String IMPLICIT = "implicit";
     static final String SCOPE_READ = "read";
     static final String SCOPE_WRITE = "write";
     static final String TRUST = "trust";
@@ -48,7 +46,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             configurer.inMemory()
                     .withClient(CLIENT_ID)
                     .secret(CLIENT_SECRET)
-                    .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
+                    .authorizedGrantTypes(GRANT_TYPE_PASSWORD, REFRESH_TOKEN)
                     .scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
                     .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                     .refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
