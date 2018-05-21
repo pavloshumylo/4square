@@ -27,20 +27,19 @@ public class UserRepositoryTest {
 
     private User firstUserExpected, secondUserExpected;
 
-    private void initializeEntity(User user) {
+    private User initializeEntity() {
+        User user = new User();
         user.setName("userName");
         user.setPassword("somePassword@1");
         user.setCity("Lviv");
         user.setEmail("email@exmaple.com");
+        return user;
     }
 
     @Before
     public void init() {
-        firstUserExpected = new User();
-        secondUserExpected = new User();
-
-        initializeEntity(firstUserExpected);
-        initializeEntity(secondUserExpected);
+        firstUserExpected = initializeEntity();
+        secondUserExpected = initializeEntity();
     }
 
     @Test

@@ -15,4 +15,4 @@ spring:
 security:
   oauth2:
     resource:
-      filter-order: 3
+      filter-order: ${FILTER_ORDER:3}

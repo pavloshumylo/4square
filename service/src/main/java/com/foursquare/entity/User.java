@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     @NotNull(message = "City shouldn't be null.")
-    @Pattern(regexp = "[a-z-A-Z]*", message = "Entered city doesn't match requirements.")
+    @Pattern(regexp = "[a-z-A-Z ]*", message = "Entered city doesn't match requirements.")
     private String city;
 
     @NotNull(message = "Password shouldn't be null")
