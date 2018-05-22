@@ -1,8 +1,11 @@
 package com.foursquare.entity;
 
 import com.google.common.base.Objects;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class User {
@@ -11,9 +14,20 @@ public class User {
     @GeneratedValue
     private int id;
 
+    @NotNull(message = "Name shouldn't be null.")
+    @Pattern(regexp = "^[a-z-A-Z-0-9]{3,15}$", message = "Entered name doesn't match requirements.")
     private String name;
+
+    @NotNull(message = "Email shouldn't be null.")
+    @Email(message = "Invalid email. Valid email example: simple@example.com.")
     private String email;
+
+    @NotNull(message = "City shouldn't be null.")
+    @Pattern(regexp = "[a-z-A-Z ]*", message = "Entered city doesn't match requirements.")
     private String city;
+
+    @NotNull(message = "Password shouldn't be null")
+    @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{5,})", message = "Entered password doesn't match requirements.")
     private String password;
 
     public int getId() {
