@@ -5,6 +5,7 @@ import com.foursquare.controller.RegistrationController;
 import com.foursquare.entity.User;
 import com.foursquare.exception.UserExistException;
 import com.foursquare.repository.UserRepository;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +44,10 @@ public class RegistrationControllerIntegrationTest {
                 .getResourceAsStream("testData/registration_controller_user_for_registration.json");
     }
 
+    @After
+    public void cleanup() {
+        userRepository.deleteAll();
+    }
 
     @Test
     public void testRegistration_ShouldReturnOkResponseEntity() throws Exception {
@@ -75,11 +80,10 @@ public class RegistrationControllerIntegrationTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(new ObjectMapper().readTree(inputStream).toString()))
                     .andExpect(status().isOk());
+
             Assert.fail();
         } catch (Exception ex) {
             assertTrue(ex.getCause() instanceof UserExistException);
-        } finally {
-            userRepository.deleteAll();
         }
     }
 }
