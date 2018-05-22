@@ -12,7 +12,3 @@ spring:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:foursquare}?useSSL=false
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:root}
-security:
-  oauth2:
-    resource:
-      filter-order: ${FILTER_ORDER:3}
