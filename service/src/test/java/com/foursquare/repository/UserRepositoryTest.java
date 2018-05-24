@@ -27,15 +27,6 @@ public class UserRepositoryTest {
 
     private User firstUserExpected, secondUserExpected;
 
-    private User initializeEntity() {
-        User user = new User();
-        user.setName("userName");
-        user.setPassword("somePassword@1");
-        user.setCity("Lviv");
-        user.setEmail("email@exmaple.com");
-        return user;
-    }
-
     @Before
     public void init() {
         firstUserExpected = initializeEntity();
@@ -83,5 +74,14 @@ public class UserRepositoryTest {
         userRepository.delete(firstUserExpected);
         userRepository.delete(secondUserExpected);
         assertThat(userRepository.findAll()).isEmpty();
+    }
+
+    private User initializeEntity() {
+        User user = new User();
+        user.setName("userName");
+        user.setPassword("somePassword@1");
+        user.setCity("Lviv");
+        user.setEmail("email@exmaple.com");
+        return user;
     }
 }
