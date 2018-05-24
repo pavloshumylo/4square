@@ -26,7 +26,7 @@ public class Venue {
     )
     private List<Category> categories;
 
-    private Date added_at; //TO CHECK
+    private Date added_at;
 
     private String name;
 

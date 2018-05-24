@@ -2,8 +2,9 @@ package com.foursquare.entity;
 
 import com.google.common.base.Objects;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Category {
@@ -14,13 +15,7 @@ public class Category {
 
     private String fs_id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "venue_category",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "venue_id")
-    )
-    private List<Venue> venues;
+    private String name;
 
     public int getId() {
         return id;
@@ -38,12 +33,12 @@ public class Category {
         this.fs_id = fs_id;
     }
 
-    public List<Venue> getVenues() {
-        return venues;
+    public String getName() {
+        return name;
     }
 
-    public void setVenues(List<Venue> venues) {
-        this.venues = venues;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -53,11 +48,11 @@ public class Category {
         Category category = (Category) o;
         return id == category.id &&
                 Objects.equal(fs_id, category.fs_id) &&
-                Objects.equal(venues, category.venues);
+                Objects.equal(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, fs_id, venues);
+        return Objects.hashCode(id, fs_id, name);
     }
 }

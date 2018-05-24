@@ -11,7 +11,8 @@ CREATE TABLE venue (
 
 CREATE TABLE category (
    id int AUTO_INCREMENT PRIMARY KEY,
-   fs_id varchar(255) NOT NULL
+   fs_id varchar(255) NOT NULL,
+   name varchar(255) NOT NULL
 );
 
 CREATE TABLE venue_category (
