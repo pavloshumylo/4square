@@ -3,6 +3,7 @@ package com.foursquare.repository;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,28 @@ public class VenueRepositoryTest {
     private VenueRepository venueRepository;
 
     @Autowired
-    private  UserRepository userRepository;
+    private UserRepository userRepository;
 
     private Venue firstVenueExpected, secondVenueExpected;
+    private static User user;
 
-    private Venue initializeEntity() {
-        User user = new User();
+    @BeforeClass
+    public static void initCommon() {
+        user = new User();
         user.setName("userName");
         user.setPassword("somePassword@1");
         user.setCity("Lviv");
         user.setEmail("email@exmaple.com");
-        userRepository.save(user);
+    }
 
+    @Before
+    public void init() {
+        user = userRepository.save(user);
+        firstVenueExpected = initializeEntity();
+        secondVenueExpected = initializeEntity();
+    }
+
+    private Venue initializeEntity() {
         Venue venue = new Venue();
         venue.setUser(user);
         venue.setFs_id("fourSquareId");
@@ -48,12 +59,6 @@ public class VenueRepositoryTest {
         venue.setAddress("venueAddress");
         venue.setPhone("venuePhone");
         return venue;
-    }
-
-    @Before
-    public void init() {
-        firstVenueExpected = initializeEntity();
-        secondVenueExpected = initializeEntity();
     }
 
     @Test
