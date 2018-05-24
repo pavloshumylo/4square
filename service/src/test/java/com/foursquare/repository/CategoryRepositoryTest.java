@@ -27,13 +27,6 @@ public class CategoryRepositoryTest {
 
     private Category firstCategoryExpected, secondCategoryExpected;
 
-    private Category initializeEntity() {
-        Category category = new Category();
-        category.setFs_id("fourSquareId");
-        category.setName("categoryName");
-        return category;
-    }
-
     @Before
     public void init() {
         firstCategoryExpected = initializeEntity();
@@ -81,5 +74,12 @@ public class CategoryRepositoryTest {
         categoryRepository.delete(firstCategoryExpected);
         categoryRepository.delete(secondCategoryExpected);
         assertThat(categoryRepository.findAll()).isEmpty();
+    }
+
+    private Category initializeEntity() {
+        Category category = new Category();
+        category.setFsId("fourSquareId");
+        category.setName("categoryName");
+        return category;
     }
 }

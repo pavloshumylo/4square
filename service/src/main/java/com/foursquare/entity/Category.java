@@ -2,6 +2,7 @@ package com.foursquare.entity;
 
 import com.google.common.base.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,7 +14,8 @@ public class Category {
     @GeneratedValue
     private int id;
 
-    private String fs_id;
+    @Column(name = "fs_id")
+    private String fsId;
 
     private String name;
 
@@ -25,12 +27,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getFs_id() {
-        return fs_id;
+    public String getFsId() {
+        return fsId;
     }
 
-    public void setFs_id(String fs_id) {
-        this.fs_id = fs_id;
+    public void setFsId(String fsId) {
+        this.fsId = fsId;
     }
 
     public String getName() {
@@ -47,12 +49,12 @@ public class Category {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
         return id == category.id &&
-                Objects.equal(fs_id, category.fs_id) &&
+                Objects.equal(fsId, category.fsId) &&
                 Objects.equal(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, fs_id, name);
+        return Objects.hashCode(id, fsId, name);
     }
 }

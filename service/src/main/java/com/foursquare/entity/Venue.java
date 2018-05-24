@@ -16,7 +16,8 @@ public class Venue {
     @OneToOne
     private User user;
 
-    private String fs_id;
+    @Column(name = "fs_id")
+    private String fsId;
 
     @ManyToMany
     @JoinTable(
@@ -26,7 +27,8 @@ public class Venue {
     )
     private List<Category> categories;
 
-    private Date added_at;
+    @Column(name = "added_at")
+    private Date addedAt;
 
     private String name;
 
@@ -50,12 +52,12 @@ public class Venue {
         this.user = user;
     }
 
-    public String getFs_id() {
-        return fs_id;
+    public String getFsId() {
+        return fsId;
     }
 
-    public void setFs_id(String fs_id) {
-        this.fs_id = fs_id;
+    public void setFsId(String fsId) {
+        this.fsId = fsId;
     }
 
     public List<Category> getCategories() {
@@ -66,12 +68,12 @@ public class Venue {
         this.categories = categories;
     }
 
-    public Date getAdded_at() {
-        return added_at;
+    public Date getAddedAt() {
+        return addedAt;
     }
 
-    public void setAdded_at(Date added_at) {
-        this.added_at = added_at;
+    public void setAddedAt(Date addedAt) {
+        this.addedAt = addedAt;
     }
 
     public String getName() {
@@ -105,9 +107,9 @@ public class Venue {
         Venue venue = (Venue) o;
         return id == venue.id &&
                 Objects.equal(user, venue.user) &&
-                Objects.equal(fs_id, venue.fs_id) &&
+                Objects.equal(fsId, venue.fsId) &&
                 Objects.equal(categories, venue.categories) &&
-                Objects.equal(added_at, venue.added_at) &&
+                Objects.equal(addedAt, venue.addedAt) &&
                 Objects.equal(name, venue.name) &&
                 Objects.equal(address, venue.address) &&
                 Objects.equal(phone, venue.phone);
@@ -115,6 +117,6 @@ public class Venue {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, user, fs_id, categories, added_at, name, address, phone);
+        return Objects.hashCode(id, user, fsId, categories, addedAt, name, address, phone);
     }
 }

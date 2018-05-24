@@ -50,17 +50,6 @@ public class VenueRepositoryTest {
         secondVenueExpected = initializeEntity();
     }
 
-    private Venue initializeEntity() {
-        Venue venue = new Venue();
-        venue.setUser(user);
-        venue.setFs_id("fourSquareId");
-        venue.setAdded_at(new Date());
-        venue.setName("venueName");
-        venue.setAddress("venueAddress");
-        venue.setPhone("venuePhone");
-        return venue;
-    }
-
     @Test
     public void testSave_ShouldSaveAndReturnExpectedVenue() {
         Venue firstVenueActual = venueRepository.save(firstVenueExpected);
@@ -102,5 +91,16 @@ public class VenueRepositoryTest {
         venueRepository.delete(firstVenueExpected);
         venueRepository.delete(secondVenueExpected);
         assertThat(venueRepository.findAll()).isEmpty();
+    }
+
+    private Venue initializeEntity() {
+        Venue venue = new Venue();
+        venue.setUser(user);
+        venue.setFsId("fourSquareId");
+        venue.setAddedAt(new Date());
+        venue.setName("venueName");
+        venue.setAddress("venueAddress");
+        venue.setPhone("venuePhone");
+        return venue;
     }
 }
