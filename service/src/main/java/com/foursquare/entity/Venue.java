@@ -3,6 +3,7 @@ package com.foursquare.entity;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class Venue {
     private User user;
 
     @Column(name = "fs_id")
+    @NotNull(message = "Foursquare id shouldn't be null.")
     private String fsId;
 
     @ManyToMany
