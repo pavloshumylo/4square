@@ -23,7 +23,7 @@ public class ErrorResponseExceptionHandler {
     }
 
     @ExceptionHandler(VenueException.class)
-    public final ErrorResponseDto handleVenueExistException(VenueException ex) {
+    public final ErrorResponseDto handleVenueException(VenueException ex) {
         return new ErrorResponseDto(409, ex.getMessage());
     }
 }

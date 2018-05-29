@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -37,6 +38,10 @@ public class Venue {
     private String address;
 
     private String phone;
+
+    public Venue() {
+        this.categories = new LinkedList<>();
+    }
 
     public int getId() {
         return id;
