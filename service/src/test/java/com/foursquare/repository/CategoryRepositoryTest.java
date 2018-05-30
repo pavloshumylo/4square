@@ -79,7 +79,7 @@ public class CategoryRepositoryTest {
     @Test
     public void testFindByFsId_ShouldReturnProperCategoryByFsId() {
         entityManager.persist(firstCategoryExpected);
-        Category categoryActual = categoryRepository.findByFsId("fourSquareId");
+        Category categoryActual = categoryRepository.findByFsId(firstCategoryExpected.getFsId());
 
         assertEquals(firstCategoryExpected, categoryActual);
     }

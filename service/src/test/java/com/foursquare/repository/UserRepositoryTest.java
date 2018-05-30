@@ -79,7 +79,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindByName_ShouldReturnProperUserByName() {
         entityManager.persist(firstUserExpected);
-        User userActual = userRepository.findByName("userName");
+        User userActual = userRepository.findByName(firstUserExpected.getName());
 
         assertEquals(firstUserExpected, userActual);
     }
