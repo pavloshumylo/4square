@@ -26,6 +26,7 @@ import java.util.Date;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,7 +47,7 @@ public class VenueControllerIntegrationTest {
 
     private MockMvc mockMvc;
     private User user;
-    private InputStream inputStreamSecond;
+    private InputStream inputStreamFirst, inputStreamSecond;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
@@ -64,6 +65,8 @@ public class VenueControllerIntegrationTest {
 
         userRepository.save(user);
 
+        inputStreamFirst = getClass().getClassLoader()
+                .getResourceAsStream("testData/venue_controller_integration_test_venue_by_fs_id.json");
         inputStreamSecond = getClass().getClassLoader()
                 .getResourceAsStream("testData/venue_controller_valid_user.json");
     }
@@ -76,10 +79,7 @@ public class VenueControllerIntegrationTest {
 
     @Test
     @WithMockUser(roles="ADMIN")
-    public void testSave_ShouldReturnOkResponse() throws Exception {
-        InputStream inputStreamFirst = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_controller_integration_test_venue_by_fs_id.json");
-
+    public void testSave_ShouldReturnOkResponseEntity() throws Exception {
         stubFor(WireMock.get(urlMatching("/v2/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -105,8 +105,37 @@ public class VenueControllerIntegrationTest {
 
             mockMvc.perform(post("/venue/save")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().readTree(inputStreamSecond).toString()))
-                    .andExpect(status().isOk());
+                    .content(new ObjectMapper().readTree(inputStreamSecond).toString()));
+
+            Assert.fail();
+        } catch (Exception ex) {
+            assertTrue(ex.getCause() instanceof VenueException);
+        }
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void testRemove_ShouldReturnOkResponseEntity() throws Exception {
+        Venue venue = new Venue();
+        venue.setUser(user);
+        venue.setFsId("4bec2c3062c0c92865ffe2d4");
+        venue.setAddedAt(new Date());
+
+        venueRepository.save(venue);
+
+        mockMvc.perform(delete("/venue/remove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().readTree(inputStreamSecond).toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void testRemove_ShouldThrowVenueException() {
+        try {
+            mockMvc.perform(delete("/venue/remove")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(new ObjectMapper().readTree(inputStreamSecond).toString()));
 
             Assert.fail();
         } catch (Exception ex) {

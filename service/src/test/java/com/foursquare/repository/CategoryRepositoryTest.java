@@ -76,6 +76,14 @@ public class CategoryRepositoryTest {
         assertThat(categoryRepository.findAll()).isEmpty();
     }
 
+    @Test
+    public void testFindByFsId_ShouldReturnProperCategoryByFsId() {
+        entityManager.persist(firstCategoryExpected);
+        Category categoryActual = categoryRepository.findByFsId("fourSquareId");
+
+        assertEquals(firstCategoryExpected, categoryActual);
+    }
+
     private Category initializeEntity() {
         Category category = new Category();
         category.setFsId("fourSquareId");

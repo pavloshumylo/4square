@@ -93,6 +93,18 @@ public class VenueRepositoryTest {
         assertThat(venueRepository.findAll()).isEmpty();
     }
 
+    @Test
+    public void testFindByUserIdAndFsId_ShouldReturnProperVenue() {
+        User user = new User();
+        user.setId(1);
+
+        firstVenueExpected.setUser(user);
+        entityManager.persist(firstVenueExpected);
+
+        Venue venueActual = venueRepository.findByUserIdAndFsId(1, "fourSquareId");
+        assertEquals(firstVenueExpected, venueActual);
+    }
+
     private Venue initializeEntity() {
         Venue venue = new Venue();
         venue.setUser(user);

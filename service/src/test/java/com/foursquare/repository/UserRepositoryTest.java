@@ -76,6 +76,14 @@ public class UserRepositoryTest {
         assertThat(userRepository.findAll()).isEmpty();
     }
 
+    @Test
+    public void testFindByName_ShouldReturnProperUserByName() {
+        entityManager.persist(firstUserExpected);
+        User userActual = userRepository.findByName("userName");
+
+        assertEquals(firstUserExpected, userActual);
+    }
+
     private User initializeEntity() {
         User user = new User();
         user.setName("userName");
