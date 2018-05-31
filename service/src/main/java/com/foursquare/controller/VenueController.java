@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/venue")
@@ -29,5 +30,11 @@ public class VenueController {
     public ResponseEntity<Void> remove(@Valid @RequestBody Venue venue) {
         venueService.remove(venue);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get/all")
+    @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public List<Venue> get() {
+        return venueService.get();
     }
 }

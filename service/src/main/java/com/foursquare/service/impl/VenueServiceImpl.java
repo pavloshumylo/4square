@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +56,16 @@ public class VenueServiceImpl implements VenueService {
         } else {
             throw new VenueException("No delete allowed. Venue doesn't exist with fs id: " + venue.getFsId());
         }
+    }
+
+    public List<Venue> get() {
+        User user = getCurrentUser();
+        List<Venue> venues = venueRepository.findAlldByUserId(user.getId());
+
+        if (venues.isEmpty()) {
+            throw new VenueException("User with name: " + user.getName() + ", doesn't have any venues");
+        }
+        return venues;
     }
 
     private User getCurrentUser() {
