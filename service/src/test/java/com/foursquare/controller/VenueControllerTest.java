@@ -1,5 +1,6 @@
 package com.foursquare.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.entity.Venue;
 import com.foursquare.service.VenueService;
@@ -10,13 +11,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class VenueControllerTest {
@@ -89,5 +93,35 @@ public class VenueControllerTest {
                  .contentType(MediaType.APPLICATION_JSON)
                  .content(new ObjectMapper().readTree(is).toString()))
                  .andExpect(status().isBadRequest());
+     }
+
+     @Test
+    public void testGet_ShouldReturnListOfProperVenuesAndOkResponseStatus() throws Exception {
+        List<Venue> venuesExpected = Arrays.asList(initializeVenue(), initializeVenue());
+
+        when(venueService.get()).thenReturn(venuesExpected);
+
+         MvcResult mvcResult = mockMvc.perform(get("/venue/get/all"))
+                 .andExpect(status().isOk())
+                 .andReturn();
+
+         String responseString = mvcResult.getResponse().getContentAsString();
+         List<Venue> venuesActual = new ObjectMapper().readValue(responseString, new TypeReference<List<Venue>>() {});
+
+         assertEquals(venuesExpected, venuesActual);
+         assertEquals(venuesExpected.get(0).getId(), venuesActual.get(0).getId());
+         assertEquals(venuesExpected.get(0).getName(), venuesActual.get(0).getName());
+         assertEquals(venuesExpected.get(0).getAddress(), venuesActual.get(0).getAddress());
+         assertEquals(venuesExpected.get(1).getId(), venuesActual.get(1).getId());
+         assertEquals(venuesExpected.get(1).getName(), venuesActual.get(1).getName());
+         assertEquals(venuesExpected.get(1).getAddress(), venuesActual.get(1).getAddress());
+     }
+
+     private Venue initializeVenue() {
+         Venue venue = new Venue();
+         venue.setId(1);
+         venue.setName("venueName");
+         venue.setAddress("venueAddress");
+         return venue;
      }
 }

@@ -26,6 +26,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -141,5 +144,36 @@ public class VenueServiceImplTest {
         when(venueRepository.findByUserIdAndFsId(anyInt(), anyString())).thenReturn(null);
 
         venueService.remove(venue);
+    }
+
+    @Test
+    public void testGet_ShouldReturnListOfProperVenues() {
+        List<Venue> venuesExpected = Arrays.asList(initializeVenue(), initializeVenue());
+        when(venueRepository.findAlldByUserId(anyInt())).thenReturn(venuesExpected);
+
+        List<Venue> venuesActual = venueService.get();
+
+        assertEquals(venuesExpected, venuesActual);
+        assertEquals(venuesExpected.get(0).getId(), venuesActual.get(0).getId());
+        assertEquals(venuesExpected.get(0).getName(), venuesActual.get(0).getName());
+        assertEquals(venuesExpected.get(0).getAddress(), venuesActual.get(0).getAddress());
+        assertEquals(venuesExpected.get(1).getId(), venuesActual.get(1).getId());
+        assertEquals(venuesExpected.get(1).getName(), venuesActual.get(1).getName());
+        assertEquals(venuesExpected.get(1).getAddress(), venuesActual.get(1).getAddress());
+    }
+
+    @Test(expected = VenueException.class)
+    public void testGet_ShouldThrowVenueException() {
+        when(venueRepository.findAlldByUserId(anyInt())).thenReturn(new ArrayList<>());
+
+        venueService.get();
+    }
+
+    private Venue initializeVenue() {
+        Venue venue = new Venue();
+        venue.setId(1);
+        venue.setName("venueName");
+        venue.setAddress("venueAddress");
+        return venue;
     }
 }

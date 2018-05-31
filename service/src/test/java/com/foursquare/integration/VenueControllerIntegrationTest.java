@@ -1,5 +1,6 @@
 package com.foursquare.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.config.FourSquareProperties;
 import com.foursquare.controller.VenueController;
@@ -18,15 +19,20 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,14 +101,9 @@ public class VenueControllerIntegrationTest {
     @Test
     @WithMockUser(roles="ADMIN")
     public void testSave_ShouldThrowVenueException() {
+            venueRepository.save(initializeVenue());
+
         try {
-            Venue venue = new Venue();
-            venue.setUser(user);
-            venue.setFsId("4bec2c3062c0c92865ffe2d4");
-            venue.setAddedAt(new Date());
-
-            venueRepository.save(venue);
-
             mockMvc.perform(post("/venue/save")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(new ObjectMapper().readTree(inputStreamSecond).toString()));
@@ -116,12 +117,7 @@ public class VenueControllerIntegrationTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void testRemove_ShouldReturnOkResponseEntity() throws Exception {
-        Venue venue = new Venue();
-        venue.setUser(user);
-        venue.setFsId("4bec2c3062c0c92865ffe2d4");
-        venue.setAddedAt(new Date());
-
-        venueRepository.save(venue);
+        venueRepository.save(initializeVenue());
 
         mockMvc.perform(delete("/venue/remove")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -141,5 +137,50 @@ public class VenueControllerIntegrationTest {
         } catch (Exception ex) {
             assertTrue(ex.getCause() instanceof VenueException);
         }
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @Transactional
+    public void testGet_ShouldReturnListOfProperVenuesAndOkResponseStatus() throws Exception {
+        Venue venueFirst = initializeVenue();
+        Venue venueSecond = initializeVenue();
+
+        venueRepository.save(venueFirst);
+        venueRepository.save(venueSecond);
+
+        MvcResult mvcResult = mockMvc.perform(get("/venue/get/all"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseString = mvcResult.getResponse().getContentAsString();
+        List<Venue> venuesActual = new ObjectMapper().readValue(responseString, new TypeReference<List<Venue>>() {});
+
+        assertEquals(venueFirst.getId(), venuesActual.get(0).getId());
+        assertEquals(venueFirst.getUser(), venuesActual.get(0).getUser());
+        assertEquals(venueSecond.getFsId(), venuesActual.get(1).getFsId());
+        assertEquals(venueSecond.getAddedAt(), venuesActual.get(1).getAddedAt());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void testGet_ShouldThrowVenueException() throws Exception {
+        try {
+            mockMvc.perform(get("/venue/get/all"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            Assert.fail();
+        } catch (Exception ex) {
+            assertTrue(ex.getCause() instanceof VenueException);
+        }
+    }
+
+    private Venue initializeVenue() {
+        Venue venue = new Venue();
+        venue.setUser(user);
+        venue.setFsId("4bec2c3062c0c92865ffe2d4");
+        venue.setAddedAt(new Date());
+        return venue;
     }
 }
