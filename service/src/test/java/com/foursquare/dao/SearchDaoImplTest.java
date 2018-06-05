@@ -41,7 +41,7 @@ public class SearchDaoImplTest {
     }
 
     @Test
-    public void testSearchFirst_ShouldReturnJson() throws IOException {
+    public void testSearchByParams_ShouldReturnJson() throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("testData/search_dao_impl_wire_mock_body_response.json");
         String responseExpected = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
@@ -56,7 +56,7 @@ public class SearchDaoImplTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testSearchFirst_ShouldThrowRuntimeException() {
+    public void testSearchByParams_ShouldThrowRuntimeException() {
             stubFor(get(urlMatching("/v2/venues/.*"))
                     .willReturn(aResponse()
                             .withStatus(200)
@@ -66,7 +66,7 @@ public class SearchDaoImplTest {
     }
 
     @Test
-    public void testSearchSecond_ShouldReturnJson() throws IOException {
+    public void testSearchByFsId_ShouldReturnJson() throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("testData/search_dao_impl_by_fs_id_wire_mock_body_response.json");
         String responseExpected = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
@@ -81,7 +81,7 @@ public class SearchDaoImplTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testSearchSecond_ShouldThrowRuntimeException() {
+    public void testSearchByFsId_ShouldThrowRuntimeException() {
         stubFor(get(urlMatching("/v2/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(200)
