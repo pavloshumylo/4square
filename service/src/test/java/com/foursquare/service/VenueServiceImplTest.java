@@ -5,7 +5,8 @@ import com.foursquare.dao.SearchDao;
 import com.foursquare.entity.Category;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
-import com.foursquare.exception.VenueException;
+import com.foursquare.exception.BadRequestException;
+import com.foursquare.exception.ResourceNotFoundException;
 import com.foursquare.repository.CategoryRepository;
 import com.foursquare.repository.UserRepository;
 import com.foursquare.repository.VenueRepository;
@@ -26,7 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,6 +56,7 @@ public class VenueServiceImplTest {
     private User user;
     private Venue venue;
     private InputStream inputStream;
+    private static final String FS_ID = "4bec2c3062c0c92865ffe2d4";
 
     @Before
     public void init() {
@@ -65,6 +66,9 @@ public class VenueServiceImplTest {
         user.setId(1);
 
         venue = new Venue();
+        venue.setId(1);
+        venue.setName("venueName");
+        venue.setAddress("venueAddress");
         venue.setFsId("4bec2c3062c0c92865ffe2d4");
 
         PowerMockito.mockStatic(SecurityContextHolder.class);
@@ -85,73 +89,76 @@ public class VenueServiceImplTest {
         when(categoryRepository.findByFsId(anyString())).thenReturn(null);
         when(categoryRepository.save(any(Category.class))).thenReturn(null);
 
-        venueService.save(venue);
+        venueService.save(FS_ID);
         verify(venueRepository).save(any(Venue.class));
     }
 
     @Test
-    public void testSave_ShouldThrowVenueExceptionWithMessageCategoryDoesntExist() throws IOException {
-        inputStream = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_service_venue_without_category_id.json");
-
-        when(venueRepository.findByUserIdAndFsId(anyInt(), anyString())).thenReturn(null);
-        when(searchDao.search(anyString())).thenReturn(new ObjectMapper().readTree(inputStream));
-
-        try {
-            venueService.save(venue);
-
-            Assert.fail();
-        } catch (VenueException ex) {
-            assertEquals("Category foursquare id doesn't exist", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void testSave_ShouldThrowVenueExceptionWithMessageCannotValidateVenue() throws IOException {
+    public void testSave_ShouldThrowBadRequestExceptionWithMessageInvalidVenue() throws IOException {
         inputStream = getClass().getClassLoader()
                 .getResourceAsStream("testData/venue_service_venue_without_id.json");
 
         when(venueRepository.findByUserIdAndFsId(anyInt(), anyString())).thenReturn(null);
-        when(searchDao.search(anyString())).thenReturn(new ObjectMapper().readTree(inputStream));
+        when(searchDao.search(FS_ID)).thenReturn(new ObjectMapper().readTree(inputStream));
 
         try {
-            venueService.save(venue);
+            venueService.save(FS_ID);
 
             Assert.fail();
-        } catch (VenueException ex) {
-            assertEquals("Cannot validate venue.", ex.getMessage());
+        } catch (BadRequestException ex) {
+            assertEquals("Invalid venue.", ex.getMessage());
         }
     }
 
-    @Test(expected = VenueException.class)
-    public void testSave_ShouldThrowVenueException() {
-        when(venueRepository.findByUserIdAndFsId(1, "4bec2c3062c0c92865ffe2d4")).thenReturn(venue);
+    @Test
+    public void testSave_ShouldThrowBadRequestExceptionWithMessageResponseDoesntHaveVenue() {
+        when(venueRepository.findByUserIdAndFsId(anyInt(), anyString())).thenReturn(null);
+        when(searchDao.search(anyString())).thenReturn(null);
 
-        venueService.save(venue);
+        try {
+            venueService.save(FS_ID);
+
+            Assert.fail();
+        } catch (BadRequestException ex) {
+            assertEquals("JsonNode from api doesn't have venue.", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testSave_ShouldThrowBadRequestException() {
+        when(venueRepository.findByUserIdAndFsId(user.getId(), FS_ID)).thenReturn(venue);
+
+        try {
+            venueService.save(FS_ID);
+
+            Assert.fail();
+        } catch (BadRequestException ex) {
+            assertEquals("Unable to create venue with id: " + FS_ID + " Venue exists already.", ex.getMessage());
+        }
     }
 
     @Test
     public void testRemove_ShouldInvokeDeleteOnce() {
-        when(venueRepository.findByUserIdAndFsId(1, "4bec2c3062c0c92865ffe2d4")).thenReturn(venue);
+        when(venueRepository.findByUserIdAndFsId(user.getId(), FS_ID)).thenReturn(venue);
 
-        venueService.remove(venue);
+        venueService.remove(FS_ID);
 
-        verify(venueRepository).delete(0);
+        verify(venueRepository).delete(venue.getId());
     }
 
-    @Test(expected = VenueException.class)
-    public void testRemove_ShouldThrowVenueException() {
+    @Test(expected = ResourceNotFoundException.class)
+    public void testRemove_ShouldThrowResourceNotFoundException() {
         when(venueRepository.findByUserIdAndFsId(anyInt(), anyString())).thenReturn(null);
 
-        venueService.remove(venue);
+        venueService.remove(FS_ID);
     }
 
     @Test
     public void testGet_ShouldReturnListOfProperVenues() {
-        List<Venue> venuesExpected = Arrays.asList(initializeVenue(), initializeVenue());
+        List<Venue> venuesExpected = Arrays.asList(venue, venue);
         when(venueRepository.findAlldByUserId(anyInt())).thenReturn(venuesExpected);
 
-        List<Venue> venuesActual = venueService.get();
+        List<Venue> venuesActual = venueService.getAll();
 
         assertEquals(venuesExpected, venuesActual);
         assertEquals(venuesExpected.get(0).getId(), venuesActual.get(0).getId());
@@ -160,20 +167,5 @@ public class VenueServiceImplTest {
         assertEquals(venuesExpected.get(1).getId(), venuesActual.get(1).getId());
         assertEquals(venuesExpected.get(1).getName(), venuesActual.get(1).getName());
         assertEquals(venuesExpected.get(1).getAddress(), venuesActual.get(1).getAddress());
-    }
-
-    @Test(expected = VenueException.class)
-    public void testGet_ShouldThrowVenueException() {
-        when(venueRepository.findAlldByUserId(anyInt())).thenReturn(new ArrayList<>());
-
-        venueService.get();
-    }
-
-    private Venue initializeVenue() {
-        Venue venue = new Venue();
-        venue.setId(1);
-        venue.setName("venueName");
-        venue.setAddress("venueAddress");
-        return venue;
     }
 }

@@ -2,8 +2,11 @@ package com.foursquare.handler;
 
 import com.foursquare.dto.ErrorResponseDto;
 import com.foursquare.exception.FourSquareApiException;
+import com.foursquare.exception.ResourceNotFoundException;
 import com.foursquare.exception.UserExistException;
-import com.foursquare.exception.VenueException;
+import com.foursquare.exception.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +25,13 @@ public class ErrorResponseExceptionHandler {
         return new ErrorResponseDto(409, ex.getMessage());
     }
 
-    @ExceptionHandler(VenueException.class)
-    public final ErrorResponseDto handleVenueException(VenueException ex) {
-        return new ErrorResponseDto(409, ex.getMessage());
+    @ExceptionHandler(BadRequestException.class)
+    public final ErrorResponseDto handleBadRequestException(BadRequestException ex) {
+        return new ErrorResponseDto(400, ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

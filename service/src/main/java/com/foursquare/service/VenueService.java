@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface VenueService {
 
-    void save(Venue venue);
-    void remove(Venue venue);
-    List<Venue> get();
+    void save(String fsId);
+    void remove(String fsId);
+    List<Venue> getAll();
 }

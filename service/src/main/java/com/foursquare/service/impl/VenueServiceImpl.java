@@ -5,7 +5,8 @@ import com.foursquare.dao.SearchDao;
 import com.foursquare.entity.Category;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
-import com.foursquare.exception.VenueException;
+import com.foursquare.exception.ResourceNotFoundException;
+import com.foursquare.exception.BadRequestException;
 import com.foursquare.repository.CategoryRepository;
 import com.foursquare.repository.UserRepository;
 import com.foursquare.repository.VenueRepository;
@@ -14,6 +15,7 @@ import com.foursquare.validator.DaoResponseVenueValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -34,37 +36,31 @@ public class VenueServiceImpl implements VenueService {
     @Autowired
     private SearchDao searchDao;
 
-    public void save(Venue venue) {
-        User user = getCurrentUser();
-
-        if(venueRepository.findByUserIdAndFsId(user.getId(), venue.getFsId()) == null) {
-            venue.setUser(user);
-            venue.setAddedAt(new Date());
-            fillInVenueByDataFromApi(venue);
-            venueRepository.save(venue);
+    @Transactional
+    public void save(String fsId) {
+        if(venueRepository.findByUserIdAndFsId(getCurrentUser().getId(), fsId) == null) {
+            venueRepository.save(fillInVenueByDataFromApi(fsId));
         } else {
-            throw new VenueException("No update allowed. Venue already exist with fs id: " + venue.getFsId());
+            throw new BadRequestException("Unable to create venue with id: " + fsId + " Venue exists already.");
         }
     }
 
-    public void remove(Venue venue) {
+    @Transactional
+    public void remove(String fsId) {
         User user = getCurrentUser();
-        Venue venueFound = venueRepository.findByUserIdAndFsId(user.getId(), venue.getFsId());
+        Venue venueFound = venueRepository.findByUserIdAndFsId(user.getId(), fsId);
 
         if(venueFound != null) {
             venueRepository.delete(venueFound.getId());
         } else {
-            throw new VenueException("No delete allowed. Venue doesn't exist with fs id: " + venue.getFsId());
+            throw new ResourceNotFoundException("Resource with id: " + fsId + " not found");
         }
     }
 
-    public List<Venue> get() {
+    public List<Venue> getAll() {
         User user = getCurrentUser();
         List<Venue> venues = venueRepository.findAlldByUserId(user.getId());
 
-        if (venues.isEmpty()) {
-            throw new VenueException("User with name: " + user.getName() + ", doesn't have any venues");
-        }
         return venues;
     }
 
@@ -72,47 +68,35 @@ public class VenueServiceImpl implements VenueService {
         return userRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
-    private void fillInVenueByDataFromApi(Venue venue) {
-        Optional<JsonNode> venueNode = Optional.ofNullable(searchDao.search(venue.getFsId())).
+    @Transactional
+    private Venue fillInVenueByDataFromApi(String fsId) {
+        Optional<JsonNode> venueNode = Optional.ofNullable(searchDao.search(fsId)).
                 map(venueNodeOptional -> venueNodeOptional.get("response")).map(responseNode -> responseNode.get("venue"));
 
-        venueNode.ifPresent(venueNodeOptional -> {
-            if(DaoResponseVenueValidatior.isValidVenue(venueNodeOptional)) {
+        if(venueNode.isPresent()) {
+            JsonNode venueJsonNode = venueNode.get();
 
-                if(venueNodeOptional.get("name") != null) {
-                    venue.setName(venueNodeOptional.get("name").textValue());
-                }
+            if(DaoResponseVenueValidatior.isValidVenue(venueJsonNode)) {
+                Venue venue = Venue.valueOf(venueJsonNode);
+                venue.setAddedAt(new Date());
+                venue.setUser(getCurrentUser());
 
-                Optional.ofNullable(venueNodeOptional.get("contact")).
-                    map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode -> venue.setPhone(phoneNode.textValue()));
-
-                Optional.ofNullable(venueNodeOptional.get("location")).
-                    map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
-                    venue.setAddress(addresssNode.textValue()));
-
-                Optional.ofNullable(venueNodeOptional.get("categories")).ifPresent(
-                        categoriesNode -> categoriesNode.forEach(categoryNode -> {
-
-                            if(categoryNode.get("id") != null){
-                                Category category = categoryRepository.findByFsId(categoryNode.get("id").textValue());
+                Optional.ofNullable(venueJsonNode.get("categories")).ifPresent(
+                    categoriesNode -> categoriesNode.forEach(categoryNode -> {
+                        Category category = categoryRepository.findByFsId(categoryNode.get("id").textValue());
 
                                 if (category == null) {
-                                    category = new Category();
-                                    category.setFsId(categoryNode.get("id").textValue());
-
-                                    if(categoryNode.get("name") != null) {
-                                        category.setName(categoryNode.get("name").textValue());
-                                    }
+                                    category = Category.valueOf(categoryNode);
                                     categoryRepository.save(category);
-                                    }
-                                    venue.getCategories().add(category);
-                                    } else {
-                                        throw new VenueException("Category foursquare id doesn't exist");
-                                    }
-                        }));
+                                }
+                                venue.getCategories().add(category);
+                    }));
+                return venue;
             } else {
-                throw new VenueException("Cannot validate venue.");
+                throw new BadRequestException("Invalid venue.");
             }
-        });
+        } else {
+            throw new BadRequestException("JsonNode from api doesn't have venue.");
+        }
     }
 }

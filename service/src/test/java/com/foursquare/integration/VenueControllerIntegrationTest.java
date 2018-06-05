@@ -6,7 +6,8 @@ import com.foursquare.config.FourSquareProperties;
 import com.foursquare.controller.VenueController;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
-import com.foursquare.exception.VenueException;
+import com.foursquare.exception.BadRequestException;
+import com.foursquare.exception.ResourceNotFoundException;
 import com.foursquare.repository.UserRepository;
 import com.foursquare.repository.VenueRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -15,7 +16,6 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,7 +53,7 @@ public class VenueControllerIntegrationTest {
 
     private MockMvc mockMvc;
     private User user;
-    private InputStream inputStreamFirst, inputStreamSecond;
+    private static final String FS_ID = "4bec2c3062c0c92865ffe2d4";
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
@@ -70,11 +70,6 @@ public class VenueControllerIntegrationTest {
         user.setEmail("email@exmaple.com");
 
         userRepository.save(user);
-
-        inputStreamFirst = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_controller_integration_test_venue_by_fs_id.json");
-        inputStreamSecond = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_controller_valid_user.json");
     }
 
     @After
@@ -86,31 +81,30 @@ public class VenueControllerIntegrationTest {
     @Test
     @WithMockUser(roles="ADMIN")
     public void testSave_ShouldReturnOkResponseEntity() throws Exception {
+        InputStream inputStreamFirst = getClass().getClassLoader()
+                .getResourceAsStream("testData/venue_controller_integration_test_venue_by_fs_id.json");
+
         stubFor(WireMock.get(urlMatching("/v2/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                         .withBody(new ObjectMapper().readTree(inputStreamFirst).toString())));
 
-        mockMvc.perform(post("/venue/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().readTree(inputStreamSecond).toString()))
+        mockMvc.perform(post("/venues/"+FS_ID))
                 .andExpect(status().isOk());
-        }
+    }
 
     @Test
     @WithMockUser(roles="ADMIN")
-    public void testSave_ShouldThrowVenueException() {
+    public void testSave_ShouldThrowBadRequestException() {
             venueRepository.save(initializeVenue());
 
         try {
-            mockMvc.perform(post("/venue/save")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().readTree(inputStreamSecond).toString()));
+            mockMvc.perform(post("/venues/"+FS_ID));
 
             Assert.fail();
         } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof VenueException);
+            assertTrue(ex.getCause() instanceof BadRequestException);
         }
     }
 
@@ -119,23 +113,19 @@ public class VenueControllerIntegrationTest {
     public void testRemove_ShouldReturnOkResponseEntity() throws Exception {
         venueRepository.save(initializeVenue());
 
-        mockMvc.perform(delete("/venue/remove")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().readTree(inputStreamSecond).toString()))
+        mockMvc.perform(delete("/venues/"+FS_ID))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testRemove_ShouldThrowVenueException() {
+    public void testRemove_ShouldThrowResourceNotFoundException() {
         try {
-            mockMvc.perform(delete("/venue/remove")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().readTree(inputStreamSecond).toString()));
+            mockMvc.perform(delete("/venues/"+FS_ID));
 
             Assert.fail();
         } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof VenueException);
+            assertTrue(ex.getCause() instanceof ResourceNotFoundException);
         }
     }
 
@@ -149,7 +139,7 @@ public class VenueControllerIntegrationTest {
         venueRepository.save(venueFirst);
         venueRepository.save(venueSecond);
 
-        MvcResult mvcResult = mockMvc.perform(get("/venue/get/all"))
+        MvcResult mvcResult = mockMvc.perform(get("/venues"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -158,22 +148,13 @@ public class VenueControllerIntegrationTest {
 
         assertEquals(venueFirst.getId(), venuesActual.get(0).getId());
         assertEquals(venueFirst.getUser(), venuesActual.get(0).getUser());
+        assertEquals(venueFirst.getFsId(), venuesActual.get(0).getFsId());
+        assertEquals(venueFirst.getAddedAt(), venuesActual.get(0).getAddedAt());
+        assertEquals(venueSecond.getId(), venuesActual.get(1).getId());
+        assertEquals(venueSecond.getUser(), venuesActual.get(1).getUser());
         assertEquals(venueSecond.getFsId(), venuesActual.get(1).getFsId());
         assertEquals(venueSecond.getAddedAt(), venuesActual.get(1).getAddedAt());
-    }
 
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void testGet_ShouldThrowVenueException() throws Exception {
-        try {
-            mockMvc.perform(get("/venue/get/all"))
-                    .andExpect(status().isOk())
-                    .andReturn();
-
-            Assert.fail();
-        } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof VenueException);
-        }
     }
 
     private Venue initializeVenue() {

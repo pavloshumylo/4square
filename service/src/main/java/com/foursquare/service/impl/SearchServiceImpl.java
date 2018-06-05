@@ -30,24 +30,7 @@ public class SearchServiceImpl implements SearchService {
 
         venuesNode.ifPresent(n -> n.forEach((venueNode) -> {
             if (DaoResponseVenueValidatior.isValidVenue(venueNode)) {
-                VenueDto venueDto = new VenueDto();
-
-                if(venueNode.get("id") != null) {
-                    venueDto.setId(venueNode.get("id").textValue());
-                }
-
-                if(venueNode.get("name") != null) {
-                    venueDto.setName(venueNode.get("name").textValue());
-                }
-
-                Optional.ofNullable(venueNode).map(venueOptionalNode -> venueOptionalNode.get("contact")).
-                        map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode ->
-                        venueDto.setPhone(phoneNode.textValue()));
-
-                Optional.ofNullable(venueNode).map(venueOptionalNode -> venueOptionalNode.get("location")).
-                        map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
-                        venueDto.setAddress(addresssNode.textValue()));
-
+                VenueDto venueDto = VenueDto.valueOf(venueNode);
                 searchResponse.getVenues().add(venueDto);
             }
         }));

@@ -1,5 +1,6 @@
 package com.foursquare.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 
 import javax.persistence.Column;
@@ -56,5 +57,19 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hashCode(id, fsId, name);
+    }
+
+    public static  Category valueOf(JsonNode node) {
+        Category category = new Category();
+
+        if(node.get("id") != null) {
+            category.setFsId(node.get("id").textValue());
+        }
+
+        if(node.get("name") != null) {
+            category.setName(node.get("name").textValue());
+        }
+
+        return category;
     }
 }

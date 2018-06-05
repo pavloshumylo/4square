@@ -2,7 +2,7 @@ package com.foursquare.dto;
 
 import com.google.common.base.Objects;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResponseDto {
@@ -10,7 +10,7 @@ public class SearchResponseDto {
     private List<VenueDto> venues;
 
     public SearchResponseDto() {
-        this.venues = new LinkedList<>();
+        this.venues = new ArrayList<>();
     }
 
     public List<VenueDto> getVenues() {

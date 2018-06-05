@@ -9,16 +9,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +30,7 @@ public class VenueControllerTest {
     private VenueService venueService;
 
     private MockMvc mockMvc;
+    private static final String FS_ID = "4bec2c3062c0c92865ffe2d4";
 
     @Before
     public void init() {
@@ -41,67 +40,31 @@ public class VenueControllerTest {
 
     @Test
     public void testSave_ShouldReturnOkResponseEntityAndShouldInvokeSaveMethodOnce() throws Exception {
-        doNothing().when(venueService).save(any(Venue.class));
+        doNothing().when(venueService).save(anyString());
 
-        InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_controller_valid_user.json");
-
-        mockMvc.perform(post("/venue/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().readTree(is).toString()))
+        mockMvc.perform(post("/venues/"+FS_ID))
                 .andExpect(status().isOk());
 
-        verify(venueService).save(any(Venue.class));
+        verify(venueService).save(FS_ID);
     }
-
-    @Test
-    public void testSave_ShouldReturnBadRequestResponseEntity() throws Exception {
-        doNothing().when(venueService).save(any(Venue.class));
-
-        InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("testData/venue_controller_invalid_user.json");
-
-        mockMvc.perform(post("/venue/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().readTree(is).toString()))
-                .andExpect(status().isBadRequest());
-        }
 
      @Test
     public void testRemove_ShouldReturnOkResponseEntityAndShouldInvokeRemoveMethodOnce() throws Exception {
-         doNothing().when(venueService).remove(any(Venue.class));
+         doNothing().when(venueService).remove(anyString());
 
-         InputStream is = getClass().getClassLoader()
-                 .getResourceAsStream("testData/venue_controller_valid_user.json");
-
-         mockMvc.perform(delete("/venue/remove")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .content(new ObjectMapper().readTree(is).toString()))
+         mockMvc.perform(delete("/venues/"+FS_ID))
                  .andExpect(status().isOk());
 
-         verify(venueService).remove(any(Venue.class));
-     }
-
-     @Test
-    public void testRemove_ShouldReturnBadRequestResponseEntity() throws Exception {
-        doNothing().when(venueService).remove(any(Venue.class));
-
-         InputStream is = getClass().getClassLoader()
-                 .getResourceAsStream("testData/venue_controller_invalid_user.json");
-
-         mockMvc.perform(delete("/venue/remove")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .content(new ObjectMapper().readTree(is).toString()))
-                 .andExpect(status().isBadRequest());
+         verify(venueService).remove(FS_ID);
      }
 
      @Test
     public void testGet_ShouldReturnListOfProperVenuesAndOkResponseStatus() throws Exception {
         List<Venue> venuesExpected = Arrays.asList(initializeVenue(), initializeVenue());
 
-        when(venueService.get()).thenReturn(venuesExpected);
+        when(venueService.getAll()).thenReturn(venuesExpected);
 
-         MvcResult mvcResult = mockMvc.perform(get("/venue/get/all"))
+         MvcResult mvcResult = mockMvc.perform(get("/venues"))
                  .andExpect(status().isOk())
                  .andReturn();
 

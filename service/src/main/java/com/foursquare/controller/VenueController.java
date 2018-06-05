@@ -8,33 +8,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/venue")
+@RequestMapping(value = "/venues")
 public class VenueController {
 
     @Autowired
     private VenueService venueService;
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "/{fsId}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<Void> save(@Valid @RequestBody Venue venue) {
-        venueService.save(venue);
+    public ResponseEntity<Void> save(@PathVariable String fsId) {
+        venueService.save(fsId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/remove")
+    @DeleteMapping(value = "/{fsId}")
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<Void> remove(@Valid @RequestBody Venue venue) {
-        venueService.remove(venue);
+    public ResponseEntity<Void> remove(@PathVariable String fsId) {
+        venueService.remove(fsId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get/all")
+    @GetMapping
     @PreAuthorize(value = "hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public List<Venue> get() {
-        return venueService.get();
+        return venueService.getAll();
     }
 }
