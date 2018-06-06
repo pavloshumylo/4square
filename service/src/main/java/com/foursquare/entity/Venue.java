@@ -1,5 +1,6 @@
 package com.foursquare.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 
@@ -31,6 +32,7 @@ public class Venue {
     private List<Category> categories;
 
     @Column(name = "added_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Kiev")
     private Date addedAt;
 
     private String name;

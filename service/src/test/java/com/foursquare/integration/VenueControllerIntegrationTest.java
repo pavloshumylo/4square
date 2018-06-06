@@ -149,12 +149,9 @@ public class VenueControllerIntegrationTest {
         assertEquals(venueFirst.getId(), venuesActual.get(0).getId());
         assertEquals(venueFirst.getUser(), venuesActual.get(0).getUser());
         assertEquals(venueFirst.getFsId(), venuesActual.get(0).getFsId());
-        assertEquals(venueFirst.getAddedAt(), venuesActual.get(0).getAddedAt());
         assertEquals(venueSecond.getId(), venuesActual.get(1).getId());
         assertEquals(venueSecond.getUser(), venuesActual.get(1).getUser());
         assertEquals(venueSecond.getFsId(), venuesActual.get(1).getFsId());
-        assertEquals(venueSecond.getAddedAt(), venuesActual.get(1).getAddedAt());
-
     }
 
     private Venue initializeVenue() {
