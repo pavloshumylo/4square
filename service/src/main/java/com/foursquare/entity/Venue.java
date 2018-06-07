@@ -32,7 +32,7 @@ public class Venue {
     private List<Category> categories;
 
     @Column(name = "added_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Kiev")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addedAt;
 
     private String name;
