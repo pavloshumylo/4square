@@ -4,15 +4,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.config.FourSquareProperties;
 import com.foursquare.controller.VenueController;
+import com.foursquare.dto.ErrorResponseDto;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
-import com.foursquare.exception.BadRequestException;
-import com.foursquare.exception.ResourceNotFoundException;
+import com.foursquare.handler.ErrorResponseExceptionHandler;
 import com.foursquare.repository.UserRepository;
 import com.foursquare.repository.VenueRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +33,6 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,7 +63,8 @@ public class VenueControllerIntegrationTest {
     @Before
     public void init() {
         fourSquareProperties.setApiHost("http://localhost:"+wireMockRule.port()+"/");
-        mockMvc = MockMvcBuilders.standaloneSetup(venueController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(venueController)
+                .setControllerAdvice(new ErrorResponseExceptionHandler()).build();
 
         user = new User();
         user.setName("user");
@@ -96,16 +99,22 @@ public class VenueControllerIntegrationTest {
 
     @Test
     @WithMockUser(roles="ADMIN")
-    public void testSave_ShouldThrowBadRequestException() {
-            venueRepository.save(initializeVenue());
+    public void testSave_ShouldReturnErrorResponseDtoWithBadRequestStatus() throws Exception {
+        ErrorResponseDto errorResponseDtoExpected =
+                new ErrorResponseDto(400, "Unable to create venue with id: " + FS_ID + " Venue exists already.");
 
-        try {
-            mockMvc.perform(post("/venues/"+FS_ID));
+        venueRepository.save(initializeVenue());
 
-            Assert.fail();
-        } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof BadRequestException);
-        }
+        MvcResult mvcResult = mockMvc.perform(post("/venues/"+FS_ID))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+        String responseString = mvcResult.getResponse().getContentAsString();
+        ErrorResponseDto errorResponseDtoActual = new ObjectMapper().readValue(responseString, ErrorResponseDto.class);
+
+        assertEquals(errorResponseDtoExpected, errorResponseDtoActual);
+        assertEquals(errorResponseDtoExpected.getCode(), errorResponseDtoActual.getCode());
+        assertEquals(errorResponseDtoExpected.getMessage(), errorResponseDtoActual.getMessage());
     }
 
     @Test
@@ -119,14 +128,20 @@ public class VenueControllerIntegrationTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testRemove_ShouldThrowResourceNotFoundException() {
-        try {
-            mockMvc.perform(delete("/venues/"+FS_ID));
+    public void testRemove_ShouldReturnErrorResponseDtoWithNotFoundStatus() throws Exception {
+        ErrorResponseDto errorResponseDtoExpected =
+                new ErrorResponseDto(404, "Resource with id: " + FS_ID + " not found");
 
-            Assert.fail();
-        } catch (Exception ex) {
-            assertTrue(ex.getCause() instanceof ResourceNotFoundException);
-        }
+        MvcResult mvcResult = mockMvc.perform(delete("/venues/"+FS_ID))
+                    .andExpect(status().isNotFound())
+                    .andReturn();
+
+        String responseString = mvcResult.getResponse().getContentAsString();
+        ErrorResponseDto errorResponseDtoActual = new ObjectMapper().readValue(responseString, ErrorResponseDto.class);
+
+        assertEquals(errorResponseDtoExpected, errorResponseDtoActual);
+        assertEquals(errorResponseDtoExpected.getCode(), errorResponseDtoActual.getCode());
+        assertEquals(errorResponseDtoExpected.getMessage(), errorResponseDtoActual.getMessage());
     }
 
     @Test

@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -48,10 +47,6 @@ public class VenueServiceImplTest {
     private CategoryRepository categoryRepository;
     @Mock
     private SearchDao searchDao;
-    @Mock
-    private SecurityContext securityContext;
-    @Mock
-    private Authentication authentication;
 
     private User user;
     private Venue venue;
@@ -60,8 +55,6 @@ public class VenueServiceImplTest {
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
-
         user = new User();
         user.setId(1);
 
@@ -70,6 +63,9 @@ public class VenueServiceImplTest {
         venue.setName("venueName");
         venue.setAddress("venueAddress");
         venue.setFsId("4bec2c3062c0c92865ffe2d4");
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        Authentication authentication = mock(Authentication.class);
 
         PowerMockito.mockStatic(SecurityContextHolder.class);
         when(SecurityContextHolder.getContext()).thenReturn(securityContext);

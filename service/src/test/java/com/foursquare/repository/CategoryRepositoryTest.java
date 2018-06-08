@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -82,6 +83,14 @@ public class CategoryRepositoryTest {
         Category categoryActual = categoryRepository.findByFsId(firstCategoryExpected.getFsId());
 
         assertEquals(firstCategoryExpected, categoryActual);
+    }
+
+    @Test
+    public void testFindByFsId_notExistingCategory_ShouldReturnNull() {
+        entityManager.persist(firstCategoryExpected);
+        Category categoryActual = categoryRepository.findByFsId("notExistingCategoryFsId");
+
+        assertNull(categoryActual);
     }
 
     private Category initializeEntity() {

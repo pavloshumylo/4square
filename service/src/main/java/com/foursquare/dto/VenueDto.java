@@ -1,6 +1,5 @@
 package com.foursquare.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.foursquare.entity.Venue;
 import com.google.common.base.Objects;
 
@@ -59,9 +58,8 @@ public class VenueDto {
         return Objects.hashCode(id, name, phone, address);
     }
 
-    public static VenueDto valueOf(JsonNode node) {
+    public static VenueDto valueOf(Venue venueFromNode) {
         VenueDto venueDto = new VenueDto();
-        Venue venueFromNode = Venue.valueOf(node);
 
         venueDto.setId(venueFromNode.getFsId());
         venueDto.setName(venueFromNode.getName());

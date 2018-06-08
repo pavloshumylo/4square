@@ -68,7 +68,6 @@ public class VenueServiceImpl implements VenueService {
         return userRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
-    @Transactional
     private Venue fillInVenueByDataFromApi(String fsId) {
         Optional<JsonNode> venueNode = Optional.ofNullable(searchDao.search(fsId)).
                 map(venueNodeOptional -> venueNodeOptional.get("response")).map(responseNode -> responseNode.get("venue"));

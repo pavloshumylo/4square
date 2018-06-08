@@ -7,6 +7,9 @@ public class ErrorResponseDto {
     private int code;
     private String message;
 
+    public ErrorResponseDto() {
+    }
+
     public ErrorResponseDto(int code, String message) {
         this.code = code;
         this.message = message;
