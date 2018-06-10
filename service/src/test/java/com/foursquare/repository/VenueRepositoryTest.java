@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -91,6 +92,22 @@ public class VenueRepositoryTest {
         venueRepository.delete(firstVenueExpected);
         venueRepository.delete(secondVenueExpected);
         assertThat(venueRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    public void testFindByUserIdAndFsId_ShouldReturnProperVenue() {
+        entityManager.persist(firstVenueExpected);
+
+        Venue venueActual = venueRepository.findByUserIdAndFsId(user.getId(), "fourSquareId");
+        assertEquals(firstVenueExpected, venueActual);
+    }
+
+    @Test
+    public void testFindByUserIdAndFsId_notExistingVenue_ShouldReturnNull() {
+        entityManager.persist(firstVenueExpected);
+        Venue venueActual = venueRepository.findByUserIdAndFsId(user.getId(), "notExistingVenueFsId");
+
+        assertNull(venueActual);
     }
 
     private Venue initializeEntity() {

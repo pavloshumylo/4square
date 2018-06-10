@@ -1,10 +1,14 @@
 package com.foursquare.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Venue {
@@ -28,6 +32,7 @@ public class Venue {
     private List<Category> categories;
 
     @Column(name = "added_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addedAt;
 
     private String name;
@@ -35,6 +40,10 @@ public class Venue {
     private String address;
 
     private String phone;
+
+    public Venue() {
+        this.categories = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -118,5 +127,25 @@ public class Venue {
     @Override
     public int hashCode() {
         return Objects.hashCode(id, user, fsId, categories, addedAt, name, address, phone);
+    }
+
+    public static Venue valueOf(JsonNode node) {
+        Venue venue = new Venue();
+        if(node.get("id") != null) {
+            venue.setFsId(node.get("id").textValue());
+        }
+
+        if(node.get("name") != null) {
+            venue.setName(node.get("name").textValue());
+        }
+
+        Optional.ofNullable(node.get("contact")).
+                map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode -> venue.setPhone(phoneNode.textValue()));
+
+        Optional.ofNullable(node.get("location")).
+                map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
+                venue.setAddress(addresssNode.textValue()));
+
+        return venue;
     }
 }

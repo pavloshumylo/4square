@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -74,6 +75,22 @@ public class UserRepositoryTest {
         userRepository.delete(firstUserExpected);
         userRepository.delete(secondUserExpected);
         assertThat(userRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    public void testFindByName_ShouldReturnProperUserByName() {
+        entityManager.persist(firstUserExpected);
+        User userActual = userRepository.findByName(firstUserExpected.getName());
+
+        assertEquals(firstUserExpected, userActual);
+    }
+
+    @Test
+    public void testFindByName_notExistingUser_ShouldReturnNull() {
+        entityManager.persist(firstUserExpected);
+        User userActual = userRepository.findByName("notExistingUserName");
+
+        assertNull(userActual);
     }
 
     private User initializeEntity() {
