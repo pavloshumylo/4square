@@ -4,8 +4,10 @@ import com.foursquare.dto.SearchResponseDto;
 import com.foursquare.endpoints.FoursquareClientEndpoints;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.client.AsyncRestTemplate;
@@ -13,8 +15,10 @@ import org.springframework.web.client.AsyncRestTemplate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Component
 public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints {
 
+    @Value("${foursquare.host:http://localhost:8080/}")
     private String host;
 
     private static final String urlSearchByParams = "{fourSquareEndPointHost}search?near={city}&query={query}&limit={limit}&access_token={access_token}";
@@ -30,6 +34,7 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 HttpMethod.GET,
                 httpEntity,
                 SearchResponseDto.class,
+                host,
                 city,
                 query,
                 limit,
@@ -45,7 +50,8 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
         ListenableFuture<ResponseEntity<ResponseEntity>> listenableFuture = new AsyncRestTemplate().exchange(urlRegisterationUser,
                 HttpMethod.POST,
                 httpEntity,
-                ResponseEntity.class);
+                ResponseEntity.class,
+                host);
 
         return buildCompletableFuture(listenableFuture);
     }
@@ -58,6 +64,7 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 HttpMethod.POST,
                 httpEntity,
                 ResponseEntity.class,
+                host,
                 fsId,
                 accessToken);
 
@@ -72,6 +79,7 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 HttpMethod.DELETE,
                 httpEntity,
                 ResponseEntity.class,
+                host,
                 fsId,
                 accessToken);
 
@@ -87,6 +95,7 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 httpEntity,
                 new ParameterizedTypeReference<List<Venue>>() {
                 },
+                host,
                 accessToken);
 
         return buildCompletableFuture(listenableFuture);
