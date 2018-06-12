@@ -8,6 +8,7 @@ import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,11 @@ public class FoursquareClientEndpointsImplTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
 
+    @Before
+    public void init() {
+        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
+    }
+
     @Test
     public void testInvokeSearchEndPoint_ShouldReturnCompletableFutureWithSearchResponseDto() throws IOException, ExecutionException, InterruptedException {
         InputStream inputStreamWithSearchResponseDtoFirst = getClass().getClassLoader()
@@ -48,7 +54,6 @@ public class FoursquareClientEndpointsImplTest {
 
         SearchResponseDto searchResponseDtoExpected = new ObjectMapper().readValue(inputStreamWithSearchResponseDtoFirst, SearchResponseDto.class);
 
-        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
         stubFor(WireMock.get(urlMatching("/search?.*"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -63,7 +68,6 @@ public class FoursquareClientEndpointsImplTest {
 
     @Test
     public void testInvokeRegistrationEndPoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
-        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
         stubFor(WireMock.post(urlMatching("/registration"))
                         .willReturn(aResponse()
                         .withStatus(200)));
@@ -75,7 +79,6 @@ public class FoursquareClientEndpointsImplTest {
 
     @Test
     public void testInvokeSaveEndpoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
-        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
         stubFor(WireMock.post(urlMatching("/venues/.*"))
                         .willReturn(aResponse()
                         .withStatus(200)));
@@ -88,7 +91,6 @@ public class FoursquareClientEndpointsImplTest {
 
     @Test
     public void testInvokeDeleteEndpoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
-        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
         stubFor(WireMock.delete(urlMatching("/venues/.*"))
                         .willReturn(aResponse()
                         .withStatus(200)));
@@ -109,7 +111,6 @@ public class FoursquareClientEndpointsImplTest {
 
         List<Venue> venuesExpected = new ObjectMapper().readValue(inputStreamWithListOfVenuesFirst, new TypeReference<List<Venue>>() {});
 
-        foursquareClientEndpoints.setHost("http://localhost:"+wireMockRule.port()+"/");
         stubFor(WireMock.get(urlMatching("/venues?.*"))
                         .willReturn(aResponse()
                         .withStatus(200)
