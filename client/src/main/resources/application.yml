@@ -1,2 +1,2 @@
 foursquare:
-  host: http://localhost:8080/
+  endPointHost: http://localhost:8080/

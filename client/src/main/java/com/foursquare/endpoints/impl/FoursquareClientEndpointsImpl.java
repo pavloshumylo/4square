@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints {
 
-    @Value("${foursquare.host:http://localhost:8080/}")
+    @Value("${foursquare.endPointHost:http://localhost:8080/}")
     private String host;
 
     private static final String urlSearchByParams = "{fourSquareEndPointHost}search?near={city}&query={query}&limit={limit}&access_token={access_token}";
@@ -115,5 +115,9 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
         });
 
         return completable;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 }
