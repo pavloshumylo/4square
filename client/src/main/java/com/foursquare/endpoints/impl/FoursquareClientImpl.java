@@ -1,7 +1,7 @@
 package com.foursquare.endpoints.impl;
 
 import com.foursquare.dto.SearchResponseDto;
-import com.foursquare.endpoints.FoursquareClientEndpoints;
+import com.foursquare.endpoints.FoursquareClient;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints {
+public class FoursquareClientImpl implements FoursquareClient {
 
-    @Value("${foursquare.endPointHost:http://localhost:8080/}")
-    private String host;
+    @Value("${foursquare.endPointHost:http://localhost:8080}")
+    private String baseEndPointsUrl;
 
-    private static final String urlSearchByParams = "{fourSquareEndPointHost}search?near={city}&query={query}&limit={limit}&access_token={access_token}";
-    private static final String urlRegisterationUser = "{fourSquareEndPointHost}registration";
-    private static final String urlSaveDeleteVenues = "{fourSquareEndPointHost}venues/{fsId}?access_token={access_token}";
-    private static final String urlGetVenues = "{fourSquareEndPointHost}venues?access_token={access_token}";
+    private static final String urlSearchByParams = "{fourSquareEndPointHost}/search?near={city}&query={query}&limit={limit}&access_token={access_token}";
+    private static final String urlRegisterationUser = "{fourSquareEndPointHost}/registration";
+    private static final String urlSaveDeleteVenues = "{fourSquareEndPointHost}/venues/{fsId}?access_token={access_token}";
+    private static final String urlGetVenues = "{fourSquareEndPointHost}/venues?access_token={access_token}";
 
-    public CompletableFuture<ResponseEntity<SearchResponseDto>> invokeSearchEndPoint(String city, String query, String limit, String accessToken) {
+    public CompletableFuture<SearchResponseDto> invokeSearchEndPoint(String city, String query, String limit, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -34,7 +34,7 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 HttpMethod.GET,
                 httpEntity,
                 SearchResponseDto.class,
-                host,
+                baseEndPointsUrl,
                 city,
                 query,
                 limit,
@@ -43,50 +43,50 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<ResponseEntity<ResponseEntity>> invokeRegistrationEndPoint(User user) {
+    public CompletableFuture<Void> invokeRegistrationEndPoint(User user) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(user, headers);
-        ListenableFuture<ResponseEntity<ResponseEntity>> listenableFuture = new AsyncRestTemplate().exchange(urlRegisterationUser,
+        ListenableFuture<ResponseEntity<Void>> listenableFuture = new AsyncRestTemplate().exchange(urlRegisterationUser,
                 HttpMethod.POST,
                 httpEntity,
-                ResponseEntity.class,
-                host);
+                Void.class,
+                baseEndPointsUrl);
 
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<ResponseEntity<ResponseEntity>> invokeSaveEndpoint(String fsId, String accessToken) {
+    public CompletableFuture<Void> invokeSaveEndpoint(String fsId, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-        ListenableFuture<ResponseEntity<ResponseEntity>> listenableFuture = new AsyncRestTemplate().exchange(urlSaveDeleteVenues,
+        ListenableFuture<ResponseEntity<Void>> listenableFuture = new AsyncRestTemplate().exchange(urlSaveDeleteVenues,
                 HttpMethod.POST,
                 httpEntity,
-                ResponseEntity.class,
-                host,
+                Void.class,
+                baseEndPointsUrl,
                 fsId,
                 accessToken);
 
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<ResponseEntity<ResponseEntity>> invokeDeleteEndpoint(String fsId, String accessToken) {
+    public CompletableFuture<Void> invokeDeleteEndpoint(String fsId, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-        ListenableFuture<ResponseEntity<ResponseEntity>> listenableFuture = new AsyncRestTemplate().exchange(urlSaveDeleteVenues,
+        ListenableFuture<ResponseEntity<Void>> listenableFuture = new AsyncRestTemplate().exchange(urlSaveDeleteVenues,
                 HttpMethod.DELETE,
                 httpEntity,
-                ResponseEntity.class,
-                host,
+                Void.class,
+                baseEndPointsUrl,
                 fsId,
                 accessToken);
 
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<ResponseEntity<List<Venue>>> invokeGetEndpoint(String accessToken) {
+    public CompletableFuture<List<Venue>> invokeGetEndpoint(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -95,18 +95,27 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
                 httpEntity,
                 new ParameterizedTypeReference<List<Venue>>() {
                 },
-                host,
+                baseEndPointsUrl,
                 accessToken);
 
         return buildCompletableFuture(listenableFuture);
     }
 
-    private static <T> CompletableFuture<T> buildCompletableFuture(ListenableFuture<T> listenableFuture) {
-        CompletableFuture<T> completable = new CompletableFuture<T>();
+    private static <T> CompletableFuture<T> buildCompletableFuture(ListenableFuture<ResponseEntity<T>> listenableFuture) {
 
-        listenableFuture.addCallback(new ListenableFutureCallback<T>() {
+        CompletableFuture<T> completable = new CompletableFuture<T>() {
             @Override
-            public void onSuccess(T result) { completable.complete(result); }
+            public boolean cancel(boolean mayInterruptIfRunning) {
+                boolean result = listenableFuture.cancel(mayInterruptIfRunning);
+                return result;
+            }
+        };
+
+        listenableFuture.addCallback(new ListenableFutureCallback<ResponseEntity<T>>() {
+            @Override
+            public void onSuccess(ResponseEntity<T> result) {
+                completable.complete(result.getBody());
+            }
 
             @Override
             public void onFailure(Throwable t) {
@@ -115,9 +124,5 @@ public class FoursquareClientEndpointsImpl implements FoursquareClientEndpoints 
         });
 
         return completable;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
     }
 }

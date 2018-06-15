@@ -1,4 +1,4 @@
 foursquare:
-  endPointHost: http://localhost:8080/
+  endPointHost: http://localhost:8080
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
