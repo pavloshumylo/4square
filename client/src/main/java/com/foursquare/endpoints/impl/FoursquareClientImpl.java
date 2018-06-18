@@ -26,7 +26,7 @@ public class FoursquareClientImpl implements FoursquareClient {
     private static final String urlSaveDeleteVenues = "{fourSquareEndPointHost}/venues/{fsId}?access_token={access_token}";
     private static final String urlGetVenues = "{fourSquareEndPointHost}/venues?access_token={access_token}";
 
-    public CompletableFuture<SearchResponseDto> invokeSearchEndPoint(String city, String query, String limit, String accessToken) {
+    public CompletableFuture<SearchResponseDto> searchVenuesByParams(String city, String query, String limit, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -43,7 +43,7 @@ public class FoursquareClientImpl implements FoursquareClient {
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<Void> invokeRegistrationEndPoint(User user) {
+    public CompletableFuture<Void> registerNewUser(User user) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(user, headers);
@@ -56,7 +56,7 @@ public class FoursquareClientImpl implements FoursquareClient {
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<Void> invokeSaveEndpoint(String fsId, String accessToken) {
+    public CompletableFuture<Void> saveVenueForUser(String fsId, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -71,7 +71,7 @@ public class FoursquareClientImpl implements FoursquareClient {
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<Void> invokeDeleteEndpoint(String fsId, String accessToken) {
+    public CompletableFuture<Void> removeVenueForUser(String fsId, String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -86,7 +86,7 @@ public class FoursquareClientImpl implements FoursquareClient {
         return buildCompletableFuture(listenableFuture);
     }
 
-    public CompletableFuture<List<Venue>> invokeGetEndpoint(String accessToken) {
+    public CompletableFuture<List<Venue>> getAllVenuesForUser(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);

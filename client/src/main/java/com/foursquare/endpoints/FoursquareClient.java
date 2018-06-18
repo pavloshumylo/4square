@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 
 public interface FoursquareClient {
 
-    CompletableFuture<SearchResponseDto> invokeSearchEndPoint(String city, String query, String limit, String accessToken);
-    CompletableFuture<Void> invokeRegistrationEndPoint(User user);
-    CompletableFuture<Void> invokeSaveEndpoint(String fsId, String accessToken);
-    CompletableFuture<Void> invokeDeleteEndpoint(String fsId, String accessToken);
-    CompletableFuture<List<Venue>> invokeGetEndpoint(String accessToken);
+    CompletableFuture<SearchResponseDto> searchVenuesByParams(String city, String query, String limit, String accessToken);
+    CompletableFuture<Void> registerNewUser(User user);
+    CompletableFuture<Void> saveVenueForUser(String fsId, String accessToken);
+    CompletableFuture<Void> removeVenueForUser(String fsId, String accessToken);
+    CompletableFuture<List<Venue>> getAllVenuesForUser(String accessToken);
 }

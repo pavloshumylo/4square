@@ -52,7 +52,7 @@ public class FoursquareClientImplTest {
     }
 
     @Test
-    public void testInvokeSearchEndPoint_ShouldReturnCompletableFutureWithSearchResponseDto() throws IOException, ExecutionException, InterruptedException {
+    public void testSearchVenuesByParams_ShouldReturnCompletableFutureWithSearchResponseDto() throws IOException, ExecutionException, InterruptedException {
         VenueDto firstVenueDto = new VenueDto();
         VenueDto secondVenueDto = new VenueDto();
 
@@ -79,48 +79,48 @@ public class FoursquareClientImplTest {
                         .withBody(new ObjectMapper().readTree(inputStreamWithSearchResponseDto).toString())));
 
         CompletableFuture<SearchResponseDto> completableFutureActual = foursquareClientEndpoints
-                .invokeSearchEndPoint("city", "query",  "limit", "accessToken");
+                .searchVenuesByParams("city", "query",  "limit", "accessToken");
 
         assertEquals(searchResponseDtoExpected, completableFutureActual.get());
     }
 
     @Test
-    public void testInvokeRegistrationEndPoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
+    public void testRegisterNewUser_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
         stubFor(WireMock.post(urlMatching("/registration"))
                         .willReturn(aResponse()
                         .withStatus(200)));
 
-        CompletableFuture<Void> completableFutureActual = foursquareClientEndpoints.invokeRegistrationEndPoint(new User());
+        CompletableFuture<Void> completableFutureActual = foursquareClientEndpoints.registerNewUser(new User());
 
         assertNull(completableFutureActual.get());
     }
 
     @Test
-    public void testInvokeSaveEndpoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
+    public void testSaveVenueForUser_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
         stubFor(WireMock.post(urlMatching("/venues/.*"))
                         .willReturn(aResponse()
                         .withStatus(200)));
 
         CompletableFuture<Void> completableFutureActual = foursquareClientEndpoints
-                .invokeSaveEndpoint("fsId", "accessToken");
+                .saveVenueForUser("fsId", "accessToken");
 
         assertNull(completableFutureActual.get());
     }
 
     @Test
-    public void testInvokeDeleteEndpoint_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
+    public void testRemoveVenueForUser_ShouldReturnCompletableFutureWithOkResponseEntity() throws ExecutionException, InterruptedException {
         stubFor(WireMock.delete(urlMatching("/venues/.*"))
                         .willReturn(aResponse()
                         .withStatus(200)));
 
         CompletableFuture<Void> completableFutureActual = foursquareClientEndpoints
-                .invokeDeleteEndpoint("fsId", "accessToken");
+                .removeVenueForUser("fsId", "accessToken");
 
         assertNull(completableFutureActual.get());
     }
 
     @Test
-    public void testInvokeGetEndpoint_ShouldReturnCompletableFutureWithListOfVenues() throws IOException, ExecutionException, InterruptedException {
+    public void testGetAllVenuesForUser_ShouldReturnCompletableFutureWithListOfVenues() throws IOException, ExecutionException, InterruptedException {
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
         Venue venueThird = new Venue();
@@ -148,20 +148,20 @@ public class FoursquareClientImplTest {
                         .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                         .withBody(new ObjectMapper().readTree(inputStreamWithListOfVenues).toString())));
 
-        CompletableFuture<List<Venue>> completableFutureActual = foursquareClientEndpoints.invokeGetEndpoint("accessToken");
+        CompletableFuture<List<Venue>> completableFutureActual = foursquareClientEndpoints.getAllVenuesForUser("accessToken");
 
         assertEquals(venuesExpected, completableFutureActual.get());
     }
 
     @Test
-    public void testInvokeSearchEndPoint_ShouldThrowHttpClientErrorException() throws InterruptedException {
+    public void testSearchVenuesByParams_ShouldThrowHttpClientErrorException() throws InterruptedException {
         stubFor(WireMock.get(urlMatching("/search?.*"))
                 .willReturn(aResponse()
                         .withStatus(400)));
 
         try {
             foursquareClientEndpoints
-                    .invokeSearchEndPoint("city", "query", "limit", "accessToken").get();
+                    .searchVenuesByParams("city", "query", "limit", "accessToken").get();
 
             Assert.fail();
         }
@@ -171,13 +171,13 @@ public class FoursquareClientImplTest {
     }
 
     @Test
-    public void testInvokeRegistrationEndPoint_ShouldThrowHttpServerErrorException() throws InterruptedException {
+    public void testRegisterNewUser_ShouldThrowHttpServerErrorException() throws InterruptedException {
         stubFor(WireMock.post(urlMatching("/registration"))
                 .willReturn(aResponse()
                         .withStatus(500)));
 
         try {
-            foursquareClientEndpoints.invokeRegistrationEndPoint(new User()).get();
+            foursquareClientEndpoints.registerNewUser(new User()).get();
 
             Assert.fail();
         }
@@ -187,14 +187,14 @@ public class FoursquareClientImplTest {
     }
 
     @Test
-    public void testInvokeSaveEndpoint_ShouldThrowHttpClientErrorException() throws InterruptedException {
+    public void testSaveVenueForUser_ShouldThrowHttpClientErrorException() throws InterruptedException {
         stubFor(WireMock.post(urlMatching("/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(409)));
 
         try {
             foursquareClientEndpoints
-                    .invokeSaveEndpoint("fsId", "accessToken").get();
+                    .saveVenueForUser("fsId", "accessToken").get();
 
             Assert.fail();
         }
@@ -204,14 +204,14 @@ public class FoursquareClientImplTest {
     }
 
     @Test
-    public void testInvokeDeleteEndpoint_ShouldThrowHttpServerErrorException() throws InterruptedException {
+    public void testRemoveVenueForUser_ShouldThrowHttpServerErrorException() throws InterruptedException {
         stubFor(WireMock.delete(urlMatching("/venues/.*"))
                 .willReturn(aResponse()
                         .withStatus(503)));
 
         try {
             foursquareClientEndpoints
-                    .invokeDeleteEndpoint("fsId", "accessToken").get();
+                    .removeVenueForUser("fsId", "accessToken").get();
 
             Assert.fail();
         }
@@ -221,13 +221,13 @@ public class FoursquareClientImplTest {
     }
 
     @Test
-    public void testInvokeGetEndpoint_ShouldThrowHttpClientErrorException() throws InterruptedException {
+    public void testGetAllVenuesForUser_ShouldThrowHttpClientErrorException() throws InterruptedException {
         stubFor(WireMock.get(urlMatching("/venues?.*"))
                 .willReturn(aResponse()
                         .withStatus(400)));
 
         try {
-            foursquareClientEndpoints.invokeGetEndpoint("accessToken").get();
+            foursquareClientEndpoints.getAllVenuesForUser("accessToken").get();
 
             Assert.fail();
         }
@@ -238,8 +238,8 @@ public class FoursquareClientImplTest {
 
     @Test(expected = CancellationException.class)
     public void testbuildCompletableFuture_Cancel_ShouldThrowCancellationException() throws InterruptedException, ExecutionException {
-            CompletableFuture completableFutureActual = foursquareClientEndpoints.invokeGetEndpoint("accessToken");
-            completableFutureActual.cancel(true);
+            CompletableFuture completableFutureActual = foursquareClientEndpoints.getAllVenuesForUser("accessToken");
+            assertTrue(completableFutureActual.cancel(true));
             completableFutureActual.get();
     }
 }
