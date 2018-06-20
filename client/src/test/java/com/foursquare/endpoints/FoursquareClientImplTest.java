@@ -15,8 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -25,13 +31,15 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RunWith(SpringRunner.class)
@@ -40,6 +48,9 @@ public class FoursquareClientImplTest {
 
     @Autowired
     private FoursquareClientImpl foursquareClientEndpoints;
+
+    @SpyBean
+    private AsyncRestTemplate asyncRestTemplate;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
@@ -236,10 +247,13 @@ public class FoursquareClientImplTest {
         }
     }
 
-    @Test(expected = CancellationException.class)
-    public void testbuildCompletableFuture_Cancel_ShouldThrowCancellationException() throws InterruptedException, ExecutionException {
-            CompletableFuture completableFutureActual = foursquareClientEndpoints.getAllVenuesForUser("accessToken");
-            assertTrue(completableFutureActual.cancel(true));
-            completableFutureActual.get();
+    @Test
+    public void testListenableFutureCancelInvocation_ShouldInvokeListenableCancelOnce() {
+        ListenableFuture listenableFuture = mock(ListenableFuture.class);
+        doReturn(listenableFuture).when(asyncRestTemplate).exchange(anyString(), any(HttpMethod.class), any(HttpEntity.class), any(ParameterizedTypeReference.class), anyString(), anyString());
+        CompletableFuture completableFutureActual = foursquareClientEndpoints.getAllVenuesForUser("accessToken");
+        completableFutureActual.cancel(true);
+
+        verify(listenableFuture).cancel(true);
     }
 }
