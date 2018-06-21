@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
-    compile group: 'com.google.guava', name: 'guava', version: guava_version
     compile group: 'org.apache.commons', name: 'commons-io', version: apache_commons_version
     compile group: 'org.springframework', name: 'spring-aspects', version: aspect_version
     compile group: 'mysql', name: 'mysql-connector-java', version: mysql_version
