@@ -1,0 +1,16 @@
+spring:
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${USERNAME:username}
+    password: ${PASSWORD:password}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:true}
+          starttls:
+            enable: ${STARTTLS:true}
+cron:
+  expression:
+    weekly: 0 0 0 * * MON
+    monthly:  0 0 0 1 * *
