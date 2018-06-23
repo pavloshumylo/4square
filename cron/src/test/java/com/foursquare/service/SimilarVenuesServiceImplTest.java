@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foursquare.dao.SimilarVenuesDao;
 import com.foursquare.dto.VenueDto;
-import com.foursquare.entity.Category;
 import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
 import com.foursquare.repository.UserRepository;
@@ -45,13 +44,8 @@ public class SimilarVenuesServiceImplTest {
     }
 
     @Test
-    public void testEmailSimilarVenues_ShouldInvokeMailSenderTwice() throws IOException {
+    public void testEmailSimilarVenues_ShouldInvokeMailSenderOnce() throws IOException {
         User user = initializeEntity();
-
-        Category category = new Category();
-        category.setId(1);
-        category.setFsId("fsId");
-        category.setName("categoryName");
 
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
@@ -59,12 +53,10 @@ public class SimilarVenuesServiceImplTest {
         venueFirst.setId(1);
         venueFirst.setFsId("fsIdFirst");
         venueFirst.setUser(user);
-        venueFirst.setCategories(Arrays.asList(category));
 
         venueSecond.setId(2);
         venueSecond.setFsId("fsIdSecond");
         venueSecond.setUser(user);
-        venueSecond.setCategories(Arrays.asList(category));
 
         VenueDto venueDto = new VenueDto();
         venueDto.setId("535a021d498ed71c77ed20e6");

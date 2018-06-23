@@ -30,12 +30,14 @@ public class TrendingCategoriesServiceImpl implements TrendingCategoriesService 
 
         LocalDateTime cronInvokationDateTime = LocalDateTime.now();
         int monthNumber = cronInvokationDateTime.getMonthValue() - 1;
+        int yearNumber = cronInvokationDateTime.getYear();
 
         if(monthNumber == 0) {
             monthNumber = 12;
+            --yearNumber;
         }
 
-        LocalDateTime previousMonthDateTime = LocalDateTime.of(cronInvokationDateTime.getYear(), monthNumber, cronInvokationDateTime.getDayOfMonth(),
+        LocalDateTime previousMonthDateTime = LocalDateTime.of(yearNumber, monthNumber, cronInvokationDateTime.getDayOfMonth(),
                 cronInvokationDateTime.getHour(), cronInvokationDateTime.getMinute(), cronInvokationDateTime.getSecond());
 
         List<Venue> allMonthlyVenues = venueRepository.findAllByAddedAtGreaterThanEqual(Date.from(previousMonthDateTime.atZone(ZoneId.systemDefault()).toInstant()));
