@@ -58,15 +58,15 @@ public class SimilarVenuesServiceImplTest {
         venueSecond.setFsId("fsIdSecond");
         venueSecond.setUser(user);
 
-        VenueDto venueDto = new VenueDto();
-        venueDto.setId("535a021d498ed71c77ed20e6");
-        venueDto.setName("Нова пошта (відділення №14)");
-        venueDto.setAddress("вул. Словацького, 5");
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("535a021d498ed71c77ed20e6");
+        venueDtoExpected.setName("Нова пошта (відділення №14)");
+        venueDtoExpected.setAddress("вул. Словацького, 5");
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Similar venues. User: " + user.getId());
-        mailMessage.setText(Arrays.asList(venueDto).toString());
+        SimpleMailMessage mailMessageExpected = new SimpleMailMessage();
+        mailMessageExpected.setTo(user.getEmail());
+        mailMessageExpected.setSubject("Similar venues. User: " + user.getId());
+        mailMessageExpected.setText(Arrays.asList(venueDtoExpected).toString());
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream is = classLoader.getResourceAsStream("testData/similar_dao_response_for_json_node_dao_response.json");
@@ -78,7 +78,7 @@ public class SimilarVenuesServiceImplTest {
         when(similarVenuesDao.getSimilarVenues(venueSecond.getFsId())).thenReturn(responseSimilarVenuesFromDao);
 
         similarVenuesService.emailSimilarVenues();
-        verify(mailSender).send(mailMessage);
+        verify(mailSender).send(mailMessageExpected);
     }
 
     @Test

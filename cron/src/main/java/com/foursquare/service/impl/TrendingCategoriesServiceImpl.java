@@ -102,7 +102,6 @@ public class TrendingCategoriesServiceImpl implements TrendingCategoriesService 
             for (Map.Entry<Category, Integer> category : topCategories) {
                 messagesToEmail.add("Category: " + category.getKey().getName() + "; Quantity: " + category.getValue());
             }
-            System.out.println(messagesToEmail);
             message.setText(messagesToEmail.toString());
             mailSender.send(message);
         }

@@ -77,17 +77,17 @@ public class SimilarVenuesServiceIntegrationTest {
 
         similarVenuesService.emailSimilarVenues();
 
-        VenueDto venueDto = new VenueDto();
-        venueDto.setId("535a021d498ed71c77ed20e6");
-        venueDto.setName("Нова пошта (відділення №14)");
-        venueDto.setAddress("вул. Словацького, 5");
+        VenueDto venueDtoExpected = new VenueDto();
+        venueDtoExpected.setId("535a021d498ed71c77ed20e6");
+        venueDtoExpected.setName("Нова пошта (відділення №14)");
+        venueDtoExpected.setAddress("вул. Словацького, 5");
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Similar venues. User: " + user.getId());
-        mailMessage.setText(Arrays.asList(venueDto).toString());
+        SimpleMailMessage mailMessageExpected = new SimpleMailMessage();
+        mailMessageExpected.setTo(user.getEmail());
+        mailMessageExpected.setSubject("Similar venues. User: " + user.getId());
+        mailMessageExpected.setText(Arrays.asList(venueDtoExpected).toString());
 
-        verify(mailSender).send(mailMessage);
+        verify(mailSender).send(mailMessageExpected);
     }
 
     private User initializeEntity() {

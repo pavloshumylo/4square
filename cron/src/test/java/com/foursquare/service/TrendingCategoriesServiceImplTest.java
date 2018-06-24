@@ -35,18 +35,14 @@ public class TrendingCategoriesServiceImplTest {
     @Mock
     private JavaMailSender mailSender;
 
+    private Category categoryFirst, categorySecond;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-    }
 
-    @Test
-    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTopThreeCategories() {
-        Category categoryFirst = new Category();
-        Category categorySecond = new Category();
-        Category categoryThird = new Category();
-        Category categoryFourth = new Category();
-        Category categoryFifth = new Category();
+        categoryFirst = new Category();
+        categorySecond = new Category();
 
         categoryFirst.setId(1);
         categoryFirst.setFsId("firstFsId");
@@ -55,6 +51,13 @@ public class TrendingCategoriesServiceImplTest {
         categorySecond.setId(2);
         categorySecond.setFsId("secondFsId");
         categorySecond.setName("secondCategoryName");
+    }
+
+    @Test
+    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTopThreeCategories() {
+        Category categoryThird = new Category();
+        Category categoryFourth = new Category();
+        Category categoryFifth = new Category();
 
         categoryThird.setId(3);
         categoryThird.setFsId("thirdFsId");
@@ -119,17 +122,6 @@ public class TrendingCategoriesServiceImplTest {
 
     @Test
     public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTopOneCategory() {
-        Category categoryFirst = new Category();
-        Category categorySecond = new Category();
-
-        categoryFirst.setId(1);
-        categoryFirst.setFsId("firstFsId");
-        categoryFirst.setName("firstCategoryName");
-
-        categorySecond.setId(2);
-        categorySecond.setFsId("secondFsId");
-        categorySecond.setName("secondCategoryName");
-
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
 
@@ -162,17 +154,6 @@ public class TrendingCategoriesServiceImplTest {
 
     @Test
     public void testEmailTrendingCategories_emptyUserList_ShouldInvokeMailSenderNever() {
-        Category categoryFirst = new Category();
-        Category categorySecond = new Category();
-
-        categoryFirst.setId(1);
-        categoryFirst.setFsId("firstFsId");
-        categoryFirst.setName("firstCategoryName");
-
-        categorySecond.setId(2);
-        categorySecond.setFsId("secondFsId");
-        categorySecond.setName("secondCategoryName");
-
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
 
