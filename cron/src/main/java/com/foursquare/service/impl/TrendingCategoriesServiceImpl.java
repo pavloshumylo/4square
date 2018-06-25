@@ -11,8 +11,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,20 +25,16 @@ public class TrendingCategoriesServiceImpl implements TrendingCategoriesService 
     private JavaMailSender mailSender;
 
     public void emailTrendingCategories() {
+        Calendar calendar = Calendar.getInstance();
 
-        LocalDateTime cronInvokationDateTime = LocalDateTime.now();
-        int monthNumber = cronInvokationDateTime.getMonthValue() - 1;
-        int yearNumber = cronInvokationDateTime.getYear();
-
-        if(monthNumber == 0) {
-            monthNumber = 12;
-            --yearNumber;
+        if(calendar.get(Calendar.MONTH) == 1) {
+            calendar.set(Calendar.MONTH, 12);
+            calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
+        } else {
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
         }
 
-        LocalDateTime previousMonthDateTime = LocalDateTime.of(yearNumber, monthNumber, cronInvokationDateTime.getDayOfMonth(),
-                cronInvokationDateTime.getHour(), cronInvokationDateTime.getMinute(), cronInvokationDateTime.getSecond());
-
-        List<Venue> allMonthlyVenues = venueRepository.findAllByAddedAtGreaterThanEqual(Date.from(previousMonthDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        List<Venue> allMonthlyVenues = venueRepository.findAllByAddedAtGreaterThanEqual(calendar.getTime());
 
         if (!allMonthlyVenues.isEmpty()) {
 

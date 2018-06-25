@@ -11,9 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -117,12 +116,10 @@ public class VenueRepositoryTest {
         entityManager.persist(firstVenueExpected);
         entityManager.persist(secondVenueExpected);
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
 
-        LocalDateTime beforeCurrentDateTime = LocalDateTime.of(currentDateTime.getYear() - 1, currentDateTime.getMonthValue(), currentDateTime.getDayOfMonth(),
-                currentDateTime.getHour(), currentDateTime.getMinute(), currentDateTime.getSecond());
-
-        List<Venue> venuesActual = venueRepository.findAllByAddedAtGreaterThanEqual(Date.from(beforeCurrentDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        List<Venue> venuesActual = venueRepository.findAllByAddedAtGreaterThanEqual(calendar.getTime());
         assertEquals(Arrays.asList(firstVenueExpected, secondVenueExpected), venuesActual);
     }
 
@@ -131,12 +128,10 @@ public class VenueRepositoryTest {
         entityManager.persist(firstVenueExpected);
         entityManager.persist(secondVenueExpected);
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
 
-        LocalDateTime afterCurrentDateTime = LocalDateTime.of(currentDateTime.getYear() + 1, currentDateTime.getMonthValue(), currentDateTime.getDayOfMonth(),
-                currentDateTime.getHour(), currentDateTime.getMinute(), currentDateTime.getSecond());
-
-        List<Venue> venuesActual = venueRepository.findAllByAddedAtGreaterThanEqual(Date.from(afterCurrentDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        List<Venue> venuesActual = venueRepository.findAllByAddedAtGreaterThanEqual(calendar.getTime());
         assertTrue(venuesActual.isEmpty());
     }
 
