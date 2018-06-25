@@ -42,64 +42,67 @@ public class TrendingCategoriesServiceImpl implements TrendingCategoriesService 
 
         List<Venue> allMonthlyVenues = venueRepository.findAllByAddedAtGreaterThanEqual(Date.from(previousMonthDateTime.atZone(ZoneId.systemDefault()).toInstant()));
 
-        HashMap<Category, Integer> monthlyCategoriesOfVenues = new HashMap<>();
+        if (!allMonthlyVenues.isEmpty()) {
 
-        for(Venue venue : allMonthlyVenues) {
-            for(Category category : venue.getCategories()) {
-                if(!monthlyCategoriesOfVenues.containsKey(category)) {
-                    monthlyCategoriesOfVenues.put(category, 0);
+            HashMap<Category, Integer> monthlyCategoriesOfVenues = new HashMap<>();
+
+            for (Venue venue : allMonthlyVenues) {
+                for (Category category : venue.getCategories()) {
+                    if (!monthlyCategoriesOfVenues.containsKey(category)) {
+                        monthlyCategoriesOfVenues.put(category, 0);
+                    }
                 }
             }
+
+            allMonthlyVenues.stream().forEach(venue ->
+                    venue.getCategories().stream().forEach(category ->
+                            monthlyCategoriesOfVenues.put(category, monthlyCategoriesOfVenues.get(category) + 1)));
+
+            List<Map.Entry<Category, Integer>> sortedMonthlyCategoriesByValue = monthlyCategoriesOfVenues.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .collect(Collectors.toList());
+
+            mailing(getTrendingCategoriesFromSortedList(sortedMonthlyCategoriesByValue));
         }
-
-        allMonthlyVenues.stream().forEach(venue ->
-                venue.getCategories().stream().forEach(category ->
-                        monthlyCategoriesOfVenues.put(category, monthlyCategoriesOfVenues.get(category)+1)));
-
-        List<Map.Entry<Category, Integer>> sortedMonthlyCategoriesByValue = monthlyCategoriesOfVenues.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toList());
-
-        mailing(getTopFromList(sortedMonthlyCategoriesByValue));
     }
 
-    private List<Map.Entry<Category, Integer>> getTopFromList(List<Map.Entry<Category, Integer>> sortedList) {
-        List<Map.Entry<Category, Integer>> topList = new ArrayList<>();
+    private List<Map.Entry<Category, Integer>> getTrendingCategoriesFromSortedList(List<Map.Entry<Category, Integer>> sortedCategoriesList) {
+        List<Map.Entry<Category, Integer>> trendingCategories = new ArrayList<>();
         int indexValue = 0;
-        int topQuantity = 3;
+        int trendingCategoriesQuantity = 3;
 
-        if (sortedList.size() < 3) {
-            topQuantity = 1;
+        if (sortedCategoriesList.size() < 3) {
+            trendingCategoriesQuantity = 1;
         }
 
-        for(int i = 0; i < topQuantity; i++) {
+        for(int i = 0; i < trendingCategoriesQuantity; i++) {
 
-            Map.Entry<Category, Integer> entryByIndex = sortedList.get(indexValue);
-            topList.add(entryByIndex);
+            Map.Entry<Category, Integer> entryByIndex = sortedCategoriesList.get(indexValue);
+            trendingCategories.add(entryByIndex);
 
-            for (int a = indexValue + 1; a < sortedList.size(); a++) {
+            for (int a = indexValue + 1; a < sortedCategoriesList.size(); a++) {
                 ++indexValue;
-                if (entryByIndex.getValue() == sortedList.get(a).getValue()) {
-                    topList.add(sortedList.get(a));
+                if (entryByIndex.getValue() == sortedCategoriesList.get(a).getValue()) {
+                    trendingCategories.add(sortedCategoriesList.get(a));
                 } else {
                     break;
                 }
             }
         }
 
-        return topList;
+        return trendingCategories;
     }
 
-    private void mailing(List<Map.Entry<Category, Integer>> topCategories) {
+    private void mailing(List<Map.Entry<Category, Integer>> trendingCategories) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         List<User> users = userRepository.findAll();
 
         for(User user : users) {
             message.setTo(user.getEmail());
-            message.setSubject("Top monthly categories");
+            message.setSubject("Trending monthly categories");
             List<String> messagesToEmail = new ArrayList<>();
-            for (Map.Entry<Category, Integer> category : topCategories) {
+            for (Map.Entry<Category, Integer> category : trendingCategories) {
                 messagesToEmail.add("Category: " + category.getKey().getName() + "; Quantity: " + category.getValue());
             }
             message.setText(messagesToEmail.toString());

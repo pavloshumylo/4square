@@ -54,7 +54,7 @@ public class TrendingCategoriesServiceImplTest {
     }
 
     @Test
-    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTopThreeCategories() {
+    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTrendingThreeCategories() {
         Category categoryThird = new Category();
         Category categoryFourth = new Category();
         Category categoryFifth = new Category();
@@ -101,7 +101,7 @@ public class TrendingCategoriesServiceImplTest {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Top monthly categories");
+        mailMessage.setSubject("Trending monthly categories");
 
         List<String> messagesToEmail = Arrays.asList(
                 "Category: " + categoryFifth.getName() + "; Quantity: 4",
@@ -121,7 +121,7 @@ public class TrendingCategoriesServiceImplTest {
     }
 
     @Test
-    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTopOneCategory() {
+    public void testEmailTrendingCategories_ShouldInvokeMailSenderWithMessageTrendingOneCategory() {
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
 
@@ -137,7 +137,7 @@ public class TrendingCategoriesServiceImplTest {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Top monthly categories");
+        mailMessage.setSubject("Trending monthly categories");
 
         List<String> messageToEmail = Arrays.asList("Category: " + categorySecond.getName() + "; Quantity: 2");
 
@@ -153,6 +153,12 @@ public class TrendingCategoriesServiceImplTest {
     }
 
     @Test
+    public void testEmailTrendingCategories_emptyVenuesList_ShouldInvokeMailSenderNever() {
+        trendingCategoriesService.emailTrendingCategories();
+        verify(mailSender, never()).send(any(SimpleMailMessage.class));
+    }
+
+    @Test
     public void testEmailTrendingCategories_emptyUserList_ShouldInvokeMailSenderNever() {
         Venue venueFirst = new Venue();
         Venue venueSecond = new Venue();
@@ -164,16 +170,6 @@ public class TrendingCategoriesServiceImplTest {
         venueSecond.setId(2);
         venueSecond.setFsId("fsIdSecond");
         venueSecond.setCategories(Arrays.asList(categoryFirst, categorySecond));
-
-        User user = initializeEntity();
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Top monthly categories");
-
-        List<String> messageToEmail = Arrays.asList("Category: " + categorySecond.getName() + "; Quantity: 2");
-
-        mailMessage.setText(messageToEmail.toString());
 
         when(venueRepository.findAllByAddedAtGreaterThanEqual(any(Date.class))).thenReturn(Arrays.asList(venueFirst,
                 venueSecond));
