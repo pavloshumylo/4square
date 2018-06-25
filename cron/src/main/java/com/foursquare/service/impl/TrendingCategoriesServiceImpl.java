@@ -27,8 +27,8 @@ public class TrendingCategoriesServiceImpl implements TrendingCategoriesService 
     public void emailTrendingCategories() {
         Calendar calendar = Calendar.getInstance();
 
-        if(calendar.get(Calendar.MONTH) == 1) {
-            calendar.set(Calendar.MONTH, 12);
+        if(calendar.get(Calendar.MONTH) == 0) {
+            calendar.set(Calendar.MONTH, 11);
             calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
         } else {
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
