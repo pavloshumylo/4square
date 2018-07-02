@@ -7,7 +7,7 @@ import com.foursquare.entity.User;
 import com.foursquare.entity.Venue;
 import com.foursquare.repository.UserRepository;
 import com.foursquare.repository.VenueRepository;
-import com.foursquare.service.SimilarVenuesService;
+import com.foursquare.service.EmailNotificationService;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,12 +29,12 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SimilarVenuesServiceIntegrationTest {
+public class EmailNotificationServiceIntegrationTest {
 
     private static final String APPLICATION_JSON_VALUE ="application/json;charset=UTF-8";
 
     @Autowired
-    private SimilarVenuesService similarVenuesService;
+    private EmailNotificationService emailNotificationService;
     @Autowired
     private VenueRepository venueRepository;
     @Autowired
@@ -75,7 +75,7 @@ public class SimilarVenuesServiceIntegrationTest {
                         .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                         .withBody(responseExpected)));
 
-        similarVenuesService.emailSimilarVenues();
+        emailNotificationService.emailSimilarVenues();
 
         VenueDto venueDtoExpected = new VenueDto();
         venueDtoExpected.setId("535a021d498ed71c77ed20e6");
