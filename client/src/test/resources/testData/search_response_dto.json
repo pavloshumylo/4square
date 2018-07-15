@@ -1,0 +1,16 @@
+{
+  "venues": [
+    {
+      "id": "first",
+      "name": "nameFirst",
+      "phone": "phoneFirst",
+      "address": "addressFirst"
+    },
+    {
+      "id": "second",
+      "name": "nameSecond",
+      "phone": "phoneSecond",
+      "address": "addressSecond"
+    }
+  ]
+}

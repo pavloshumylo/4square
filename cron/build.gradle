@@ -1,4 +1,4 @@
-group 'demo'
+group 'com.foursquare'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -10,5 +10,12 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
+    compile group: 'mysql', name: 'mysql-connector-java', version: mysql_version
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: spring_boot_mail_version
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: wiremock_version
+    testCompile group: 'com.h2database', name: 'h2', version: h2_version
+    compile project(':common')
 }

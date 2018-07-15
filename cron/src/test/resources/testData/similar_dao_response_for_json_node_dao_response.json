@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5b2bc24d9fb6b735a1ee6d8f"
+  },
+  "response": {
+    "similarVenues": {
+      "count": 1,
+      "items": [
+        {
+          "id": "535a021d498ed71c77ed20e6",
+          "name": "Нова пошта (відділення №14)",
+          "contact": {},
+          "location": {
+            "address": "вул. Словацького, 5",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.83832099953952,
+                "lng": 24.023289687789234
+              }
+            ],
+            "postalCode": "79000",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Словацького, 5 (вул. Петра Дорошенка)",
+              "Львів, 79000",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5b2bc24d9fb6b735a1ee6d8f"
+  },
+  "response": {
+    "similarVenues": {
+      "count": 5,
+      "items": [
+        {
+          "id": "535a021d498ed71c77ed20e6",
+          "name": "Нова пошта (відділення №14)",
+          "contact": {},
+          "location": {
+            "address": "вул. Словацького, 5",
+            "crossStreet": "вул. Петра Дорошенка",
+            "lat": 49.83832099953952,
+            "lng": 24.023289687789234,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.83832099953952,
+                "lng": 24.023289687789234
+              }
+            ],
+            "postalCode": "79000",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Словацького, 5 (вул. Петра Дорошенка)",
+              "Львів, 79000",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        },
+        {
+          "id": "4f3e2458d5fba342161b2f88",
+          "name": "Укрпошта 79005",
+          "contact": {},
+          "location": {
+            "address": "вул. Мартовича, 2",
+            "lat": 49.83546747040267,
+            "lng": 24.03069373684199,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.83546747040267,
+                "lng": 24.03069373684199
+              }
+            ],
+            "postalCode": "79005",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Мартовича, 2",
+              "Львів, 79005",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        },
+        {
+          "id": "522391f211d256269a94c6e9",
+          "name": "Нова пошта (відділення №15)",
+          "contact": {},
+          "location": {
+            "address": "вул. Героїв УПА, 6",
+            "crossStreet": "між вул. Степана Бандери і вул. Опольського",
+            "lat": 49.83505080074597,
+            "lng": 24.004495422220575,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.83505080074597,
+                "lng": 24.004495422220575
+              }
+            ],
+            "postalCode": "79018",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Героїв УПА, 6 (між вул. Степана Бандери і вул. Опольського)",
+              "Львів, 79018",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        },
+        {
+          "id": "4ed4ef4a469098aeff78241e",
+          "name": "Укрпошта 79026",
+          "contact": {},
+          "location": {
+            "address": "вул. Стрийська, 78",
+            "lat": 49.81997900533479,
+            "lng": 24.019702385811097,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.81997900533479,
+                "lng": 24.019702385811097
+              }
+            ],
+            "postalCode": "79026",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Стрийська, 78",
+              "Львів, 79026",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        },
+        {
+          "id": "53171622498e17225cb60ccd",
+          "name": "Нова пошта (відділення №18)",
+          "contact": {},
+          "location": {
+            "address": "вул. Наукова, 12а",
+            "crossStreet": "вул. Тролейбусна",
+            "lat": 49.803696101060595,
+            "lng": 24.00324396815621,
+            "labeledLatLngs": [
+              {
+                "label": "display",
+                "lat": 49.803696101060595,
+                "lng": 24.00324396815621
+              }
+            ],
+            "postalCode": "79000",
+            "cc": "UA",
+            "city": "Львів",
+            "state": "Львівська обл.",
+            "country": "Україна",
+            "formattedAddress": [
+              "вул. Наукова, 12а (вул. Тролейбусна)",
+              "Львів, 79000",
+              "Україна"
+            ]
+          },
+          "categories": [
+            {
+              "id": "4bf58dd8d48988d172941735",
+              "name": "Post Office",
+              "pluralName": "Post Offices",
+              "shortName": "Post Office",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+                "suffix": ".png"
+              },
+              "primary": true
+            }
+          ],
+          "verified": false,
+          "stats": {
+            "tipCount": 0,
+            "usersCount": 0,
+            "checkinsCount": 0,
+            "visitsCount": 0
+          },
+          "beenHere": {
+            "count": 0,
+            "lastCheckinExpiredAt": 0,
+            "marked": false,
+            "unconfirmedCount": 0
+          }
+        }
+      ]
+    }
+  }
+}

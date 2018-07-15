@@ -1,10 +1,20 @@
-group 'demo'
+group 'com.foursquare'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
 repositories {
     mavenCentral()
+}
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Test) {
+        systemProperty "file.encoding", "UTF-8"
+    }
 }
 
 sourceCompatibility = 1.8

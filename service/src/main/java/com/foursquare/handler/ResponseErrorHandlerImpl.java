@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
@@ -20,7 +19,7 @@ public class ResponseErrorHandlerImpl extends DefaultResponseErrorHandler {
         JsonNode jsonNode = null;
         try {
             jsonNode = new ObjectMapper().readTree(response.getBody());
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("Exception thrown: " + e + ", message: " + e.getMessage());
             throw  new RuntimeException(e);
         }

@@ -41,7 +41,7 @@ public class SearchDaoImplTest {
     }
 
     @Test
-    public void testSearch_ShouldReturnJson() throws IOException {
+    public void testSearchByParams_ShouldReturnJson() throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("testData/search_dao_impl_wire_mock_body_response.json");
         String responseExpected = IOUtils.toString(is, StandardCharsets.UTF_8.name());
 
@@ -55,13 +55,38 @@ public class SearchDaoImplTest {
         assertEquals(new ObjectMapper().readTree(responseExpected), responseActual);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testSearch_ShouldThrowNullPointerException() {
+    @Test(expected = RuntimeException.class)
+    public void testSearchByParams_ShouldThrowRuntimeException() {
             stubFor(get(urlMatching("/v2/venues/.*"))
                     .willReturn(aResponse()
                             .withStatus(200)
                             .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                             .withBody("")));
             searchDao.search("queryFirst", "querySecond", "queryThird");
+    }
+
+    @Test
+    public void testSearchByFsId_ShouldReturnJson() throws IOException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("testData/search_dao_impl_by_fs_id_wire_mock_body_response.json");
+        String responseExpected = IOUtils.toString(is, StandardCharsets.UTF_8.name());
+
+        stubFor(get(urlMatching("/v2/venues/.*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", APPLICATION_JSON_VALUE)
+                        .withBody(responseExpected)));
+
+        JsonNode responseActual = searchDao.search("4bec2c3062c0c92865ffe2d4");
+        assertEquals(new ObjectMapper().readTree(responseExpected), responseActual);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testSearchByFsId_ShouldThrowRuntimeException() {
+        stubFor(get(urlMatching("/v2/venues/.*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", APPLICATION_JSON_VALUE)
+                        .withBody("")));
+        searchDao.search("4bec2c3062c0c92865ffe2d4");
     }
 }

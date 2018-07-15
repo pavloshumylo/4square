@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "firstName",
+    "fsId": "firstFsId"
+  },
+  {
+    "id": 2,
+    "name": "secondName",
+    "fsId": "secondFsId"
+  },
+  {
+    "id": 3,
+    "name": "thirdName",
+    "fsId": "thirdFsId"
+  }
+]

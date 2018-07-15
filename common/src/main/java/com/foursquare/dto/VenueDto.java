@@ -1,6 +1,10 @@
 package com.foursquare.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.foursquare.entity.Venue;
 import com.google.common.base.Objects;
+
+import java.util.Optional;
 
 public class VenueDto {
 
@@ -55,5 +59,36 @@ public class VenueDto {
     @Override
     public int hashCode() {
         return Objects.hashCode(id, name, phone, address);
+    }
+
+    public static VenueDto valueOf(Venue venueFromNode) {
+        VenueDto venueDto = new VenueDto();
+
+        venueDto.setId(venueFromNode.getFsId());
+        venueDto.setName(venueFromNode.getName());
+        venueDto.setPhone(venueFromNode.getPhone());
+        venueDto.setAddress(venueFromNode.getAddress());
+
+        return venueDto;
+    }
+
+    public static VenueDto valueOf(JsonNode node) {
+        VenueDto venueDto = new VenueDto();
+        if(node.get("id") != null) {
+            venueDto.setId(node.get("id").textValue());
+        }
+
+        if(node.get("name") != null) {
+            venueDto.setName(node.get("name").textValue());
+        }
+
+        Optional.ofNullable(node.get("contact")).
+                map(contactNode -> contactNode.get("phone")).ifPresent(phoneNode -> venueDto.setPhone(phoneNode.textValue()));
+
+        Optional.ofNullable(node.get("location")).
+                map(locationNode -> locationNode.get("address")).ifPresent(addresssNode ->
+                venueDto.setAddress(addresssNode.textValue()));
+
+        return venueDto;
     }
 }
